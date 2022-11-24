@@ -10,7 +10,6 @@ import lombok.NonNull;
  * @author Lajos Cseppento
  */
 class YccUserRepository implements AutoCloseable {
-
   private final EntityManager entityManager;
 
   YccUserRepository(@NonNull EntityManager entityManager) {

@@ -18,7 +18,7 @@ public class YccUserStorageProviderFactory
   public YccUserStorageProvider create(
       @NonNull KeycloakSession session, @NonNull ComponentModel model) {
     EntityManager entityManager =
-        session.getProvider(JpaConnectionProvider.class, "user-store").getEntityManager();
+        session.getProvider(JpaConnectionProvider.class, "ycc-db").getEntityManager();
     YccUserRepository repository = new YccUserRepository(entityManager);
     return new YccUserStorageProvider(session, model, repository);
   }
