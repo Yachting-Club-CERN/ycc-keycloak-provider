@@ -24,11 +24,21 @@ public class YccUserStorageProviderFactory
 
   private final List<ProviderConfigProperty> configMetadata;
 
+
+  //     <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
+//      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+
   public YccUserStorageProviderFactory() {
     this.configMetadata = ProviderConfigurationBuilder.create()
         .property()
+        .name(YccKeycloakProviderConstants.JDBC_DRIVER_PROPERTY_NAME)
+        .label("JDBC Driver")
+        .type(ProviderConfigProperty.STRING_TYPE)
+        .helpText("JDBC Driver, use oracle.jdbc.OracleDriver for Oracle")
+        .add()
+        .property()
         .name(YccKeycloakProviderConstants.JDBC_URL_PROPERTY_NAME)
-        .label("JDBC URL")
+        .label("JDBC URL, use jdbc:oracle:thin:@localhost:1521:XE for local")
         .type(ProviderConfigProperty.STRING_TYPE)
         .helpText("Database JDBC")
         .add()

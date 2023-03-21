@@ -7,8 +7,9 @@
   <persistence-unit name="ycc-db" transaction-type="JTA">
     <class>ch.cern.ycc.keycloakprovider.YccUserEntity</class>
     <properties>
-      <property name="hibernate.connection.datasource" value="ycc-db" />
-      <property name="javax.persistence.transactionType" value="JTA" />
+      <!--  TODO This probs not needed-->
+      <property name="hibernate.connection.datasource" value="ycc-db"/>
+      <property name="javax.persistence.transactionType" value="JTA"/>
 
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
       <property name="hibernate.show_sql" value="false"/>

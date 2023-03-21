@@ -2,10 +2,14 @@ package ch.cern.ycc.keycloakprovider.utils;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import javax.persistence.Persistence;
 import org.keycloak.component.ComponentModel;
 
 public class DatabaseHelper {
   public static Connection getConnection(ComponentModel config) throws SQLException {
+    Persistence
+        .createEntityManagerFactory("ycc-db")
+        .createEntityManager()
     String driverClass = config.get(CONFIG_KEY_JDBC_DRIVER);
     try {
       Class.forName(driverClass);
