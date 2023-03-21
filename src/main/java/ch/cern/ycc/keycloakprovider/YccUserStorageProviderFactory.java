@@ -88,7 +88,6 @@ public class YccUserStorageProviderFactory
     return new YccUserStorageProvider(session, model, repository);
   }
 
-
   @Override
   public String getId() {
     return "ycc-user-provider";
