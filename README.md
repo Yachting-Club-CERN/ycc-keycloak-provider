@@ -9,17 +9,9 @@ For developers, start by reading
 [this one](https://github.com/dasniko/keycloak-user-spi-demo). Also, there is
 an [official documentation](https://www.keycloak.org/docs/latest/server_development/index.html#_user-storage-spi).
 
-## TODO
-
-* OKD4 deployment
-* metrics and health endpoints only exposed inside the cluster
-* dedicated oracle db for keycloak
-
 ## Configuration
 
-See `conf/keycloak.conf`. For the deployed instance use the dedicated database (for local
-development default H2 database is perfect, but you can also use `ycckeycloaklocal`
-in `ycc-db-local`).
+See `conf/keycloak.conf`. For the deployed instance use the dedicated database.
 
 Health and metrics endpoints should be enabled by default, but only accessible inside the cluster.
 
@@ -46,7 +38,18 @@ start. (This can be done when the container is started.) If `local` is present, 
 (However, this allows us to only have one Keycloak instance deployed which can serve several realms,
 either from the production or the test database.)
 
-## JPA Configuration Dead Ends
+## Development
+
+Clone this repo and use your favourite editor (if in doubt, just use IntelliJ Commuinity Edition).
+This is a Gradle project.
+
+For localdevelopment default H2 database is perfect, but you can also use `ycckeycloaklocal`
+in `ycc-db-local`, especially if you want to test migration. See `ycc-infra/ycc-keycloak-dev` for
+more details.
+
+## Notes
+
+### JPA Configuration Dead Ends
 
 I (Lajos) have tried *many-many* ways of facilitating the configuration. From the code point of view
 using `EntityManager` (JPA/Hibernate) is beneficial. However, Keycloak+Quarkus complicates the view.

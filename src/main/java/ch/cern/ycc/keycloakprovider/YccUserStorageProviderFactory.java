@@ -26,11 +26,11 @@ public class YccUserStorageProviderFactory
       "This provider is able to federate users from the YCC Oracle Database";
   private static final String DATA_SOURCE_PROPERTY_NAME = "dataSource";
 
-  private final List<ProviderConfigProperty> configMetadata;
+  private final List<ProviderConfigProperty> configurationProperties;
 
   /** Constructor. Initialises configuration metadata. */
   public YccUserStorageProviderFactory() {
-    this.configMetadata =
+    this.configurationProperties =
         ProviderConfigurationBuilder.create()
             .property()
             .name(DATA_SOURCE_PROPERTY_NAME)
@@ -44,7 +44,7 @@ public class YccUserStorageProviderFactory
 
   @Override
   public List<ProviderConfigProperty> getConfigProperties() {
-    return configMetadata;
+    return configurationProperties;
   }
 
   @Override

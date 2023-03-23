@@ -11,9 +11,7 @@ import javax.persistence.Persistence;
  * @author Lajos Cseppento
  */
 class YccUserEntityDemo {
-
   public static void main(String[] args) {
-    // Start the local db
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("ycc-db-local");
     EntityManager entityManager = emf.createEntityManager();
 

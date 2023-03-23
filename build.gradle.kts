@@ -19,6 +19,7 @@ configurations {
     testImplementation.get().extendsFrom(compileOnly.get())
 }
 
+// Generate tasks for creating configuration JARs
 val configuration = java.sourceSets.register("configuration-template")
 
 listOf("ycc-db-local", "ycc-db-test", "ycc-db-prod").forEach { env ->
