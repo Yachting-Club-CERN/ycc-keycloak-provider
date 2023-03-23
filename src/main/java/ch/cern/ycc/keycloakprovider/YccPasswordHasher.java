@@ -12,7 +12,7 @@ import lombok.NonNull;
  *
  * @author Lajos Cseppento
  */
-public final class YccPasswordHasher {
+final class YccPasswordHasher {
   private static final String HASH_PREFIX = "{X-PBKDF2}HMACSHA1";
   private static final int PBKDF2_ITERATIONS = 20000;
   private static final int SALT_BYTE_SIZE = 16;

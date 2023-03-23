@@ -6,7 +6,6 @@ package ch.cern.ycc.keycloakprovider;
  * @author Lajos Cseppento
  */
 public class YccKeycloakProviderException extends RuntimeException {
-
   /**
    * Default constructor.
    *
