@@ -2,6 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("dev.lajoscseppento.ruthless.java-library")
+    id("org.sonarqube") version "4.0.0.2929"
 }
 
 val keycloakVersion = "21.0.1"
