@@ -1,0 +1,54 @@
+name: CI
+on: [ push, pull_request, workflow_dispatch ]
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: false
+    # Avoid duplicated CI runs for internal PRs
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Set up Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+          check-latest: true
+          cache: 'gradle'
+      - name: Cache SonarCloud packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.sonar/cache
+          key: ${{ runner.os }}--sonar
+          restore-keys: ${{ runner.os }}-sonar
+      - name: Build
+        uses: burrunan/gradle-cache-action@v1
+        with:
+          arguments: --scan build
+      - name: Sonar
+        uses: burrunan/gradle-cache-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          arguments: --scan sonarqube
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          check_name: Test Results
+          files: '**/build/test-results/**/*.xml'
+  validation:
+    name: Validate Gradle Wrapper
+    runs-on: ubuntu-20.04
+    # Avoid duplicated CI runs for internal PRs
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - uses: actions/checkout@v3
+      - uses: gradle/wrapper-validation-action@v1
