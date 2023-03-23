@@ -28,6 +28,7 @@ public class YccUserStorageProviderFactory
 
   private final List<ProviderConfigProperty> configMetadata;
 
+  /** Constructor. Initialises configuration metadata. */
   public YccUserStorageProviderFactory() {
     this.configMetadata =
         ProviderConfigurationBuilder.create()
