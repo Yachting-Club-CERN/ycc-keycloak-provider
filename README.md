@@ -1,5 +1,8 @@
 # YCC Keycloak Provider
 
+[![Release](https://img.shields.io/github/v/release/Yachting-Club-CERN/ycc-keycloak-provider?label=Release)](https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/latest)
+[![CI](https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/workflows/CI/badge.svg)](https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/actions)
+
 This Keycloak provider connects our Oracle DB users to Keycloak. Handy, since we can keep running
 both old and new generation components.
 
