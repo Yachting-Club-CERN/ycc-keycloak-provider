@@ -46,6 +46,9 @@ jobs:
           files: '**/build/test-results/**/*.xml'
       - name: Publish artifacts
         uses: burrunan/gradle-cache-action@v1
+        env:
+          GPR_USERNAME: ${{ secrets.GPR_USERNAME }}
+          GPR_TOKEN: ${{ secrets.GPR_TOKEN }}
         with:
           arguments: publish
   validation:

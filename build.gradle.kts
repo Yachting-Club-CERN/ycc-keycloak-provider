@@ -60,8 +60,9 @@ publishing {
                 url = uri("https://maven.pkg.github.com/Yachting-Club-CERN/ycc-keycloak-provider")
                 credentials {
                     username =
-                        project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
-                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                        project.findProperty("gpr.user") as String? ?: System.getenv("GPR_USERNAME")
+                    password =
+                        project.findProperty("gpr.key") as String? ?: System.getenv("GPR_TOKEN")
                 }
             }
         }
