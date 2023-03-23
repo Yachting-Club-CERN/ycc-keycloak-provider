@@ -5,37 +5,40 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-class YccEntityIntegrationTest {
+/**
+ * User entity demo. Start the local DB before running this program.
+ *
+ * @author Lajos Cseppento
+ */
+class YccUserEntityDemo {
 
-  YccEntityIntegrationTest() {
+  public static void main(String[] args) {
+    // Start the local db
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("ycc-db-local");
     EntityManager entityManager = emf.createEntityManager();
-    //
-    //    CriteriaBuilder cb =entityManager.getCriteriaBuilder();
-    //    CriteriaQuery<YccUserEntity> cq = cb.createQuery(YccUserEntity.class);
-    //    Root<YccUserEntity> rootEntry = cq.from(YccUserEntity.class);
-    //    CriteriaQuery<YccUserEntity> all = cq.select(rootEntry);
 
-    //    TypedQuery<YccUserEntity> allQuery = entityManager.createQuery(all);
-    //    List<YccUserEntity> res = allQuery.getResultList();
-
-    List<YccUserEntity> res =
+    System.out.println("> Users:");
+    List<YccUserEntity> allUsers =
         entityManager
             .createQuery("SELECT u FROM YccUserEntity u", YccUserEntity.class)
             .getResultList();
 
-    for (YccUserEntity re : res) {
-      System.out.println(re);
+    for (YccUserEntity user : allUsers) {
+      System.out.println(user);
     }
+    System.out.println();
 
-    int res2 =
+    System.out.println("> User count:");
+    int userCount =
         entityManager
             .createQuery("SELECT COUNT(u) FROM YccUserEntity u", Long.class)
             .getSingleResult()
             .intValue();
-    System.out.println(res2);
+    System.out.println(userCount);
+    System.out.println();
 
-    YccUserEntity res3 =
+    System.out.println("> Search:");
+    YccUserEntity searchResult =
         entityManager
             .createQuery(
                 "SELECT u FROM YccUserEntity u WHERE lower(u.username)=lower(:usernameOrEmail) OR lower(u.email)=lower(:usernameOrEmail)",
@@ -45,23 +48,20 @@ class YccEntityIntegrationTest {
             .findAny()
             .orElse(null);
 
-    System.out.println(res3);
+    System.out.println(searchResult);
+    System.out.println();
 
-    String search = null;
-    List<YccUserEntity> res4 =
+    System.out.println("> Search with null:");
+    List<YccUserEntity> nullSearchResult =
         entityManager
             .createNamedQuery("YccUserEntity.search", YccUserEntity.class)
-            .setParameter("search", search)
+            .setParameter("search", null)
             .getResultStream()
             .toList();
-    for (YccUserEntity re : res4) {
-      System.out.println(re);
+    for (YccUserEntity user : nullSearchResult) {
+      System.out.println(user);
     }
-    System.out.println(res4.size());
-  }
-
-  public static void main(String[] args) {
-    new YccEntityIntegrationTest();
-    //
+    System.out.println(nullSearchResult.size());
+    System.out.println();
   }
 }

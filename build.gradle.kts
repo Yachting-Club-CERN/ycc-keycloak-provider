@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 plugins {
     id("dev.lajoscseppento.ruthless.java-library")
 }
@@ -15,4 +17,23 @@ dependencies {
 
 configurations {
     testImplementation.get().extendsFrom(compileOnly.get())
+}
+
+val configuration = java.sourceSets.register("configuration-template")
+
+listOf("ycc-db-local", "ycc-db-test", "ycc-db-prod").forEach { env ->
+    val generate = tasks.register<Sync>("generate-$env") {
+        from(configuration.get().allSource)
+        into(project.buildDir.toPath().resolve("tmp/generated-$env"))
+        filter(ReplaceTokens::class, "tokens" to mapOf("name" to env))
+    }
+
+    val jar = tasks.register<Jar>("jar-$env") {
+        from(generate)
+        archiveClassifier.set(env)
+    }
+
+    tasks.named("assemble") {
+        dependsOn(jar)
+    }
 }

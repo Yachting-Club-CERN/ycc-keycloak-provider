@@ -3,6 +3,7 @@ package ch.cern.ycc.keycloakprovider;
 import java.util.List;
 import javax.persistence.EntityManager;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
 import org.keycloak.component.ComponentValidationException;
 import org.keycloak.connections.jpa.JpaConnectionProvider;
@@ -12,94 +13,98 @@ import org.keycloak.provider.ProviderConfigProperty;
 import org.keycloak.provider.ProviderConfigurationBuilder;
 import org.keycloak.storage.UserStorageProviderFactory;
 
-
 /**
  * Keycloak storage provider factory for YCC authentication.
  *
  * @author Lajos Csppento
  */
-// TODO https://github.com/Baeldung/spring-security-oauth/blob/master/oauth-rest/keycloak-custom-providers/src/main/java/com/baeldung/auth/provider/user/CustomUserStorageProvider.java
+@Slf4j
 public class YccUserStorageProviderFactory
     implements UserStorageProviderFactory<YccUserStorageProvider> {
+  private static final String ID = "ycc-user-provider";
+  private static final String HELP_TEXT =
+      "This provider is able to federate users from the YCC Oracle Database";
+  private static final String DATA_SOURCE_PROPERTY_NAME = "dataSource";
 
   private final List<ProviderConfigProperty> configMetadata;
 
-
-  //     <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
-//      <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
-
   public YccUserStorageProviderFactory() {
-    this.configMetadata = ProviderConfigurationBuilder.create()
-        .property()
-        .name(YccKeycloakProviderConstants.JDBC_DRIVER_PROPERTY_NAME)
-        .label("JDBC Driver")
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .helpText("JDBC Driver, use oracle.jdbc.OracleDriver for Oracle")
-        .add()
-        .property()
-        .name(YccKeycloakProviderConstants.JDBC_URL_PROPERTY_NAME)
-        .label("JDBC URL, use jdbc:oracle:thin:@localhost:1521:XE for local")
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .helpText("Database JDBC")
-        .add()
-        .property()
-        .name(YccKeycloakProviderConstants.JDBC_USERNAME_PROPERTY_NAME)
-        .label("Username")
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .helpText("Database username")
-        .add()
-        .property()
-        .name(YccKeycloakProviderConstants.JDBC_PASSWORD_PROPERTY_NAME)
-        .label("Password")
-        .type(ProviderConfigProperty.STRING_TYPE)
-        .helpText("Database password")
-        .secret(true)
-        .add()
-        .build();;
+    this.configMetadata =
+        ProviderConfigurationBuilder.create()
+            .property()
+            .name(DATA_SOURCE_PROPERTY_NAME)
+            .label("Data source name")
+            .type(ProviderConfigProperty.STRING_TYPE)
+            .helpText(
+                "Probably ycc-db-local, ycc-db-test or ycc-db-prod. Must be preconfigured before you start the server instance.")
+            .add()
+            .build();
   }
 
-  // Configuration support methods
   @Override
   public List<ProviderConfigProperty> getConfigProperties() {
     return configMetadata;
   }
 
   @Override
-  public void validateConfiguration(KeycloakSession session, RealmModel realm, ComponentModel config) throws ComponentValidationException {
-    try (Connection c = DbUtil.getConnection(config)) {
-      log.info("[I84] Testing connection..." );
-      c.createStatement().execute(config.get(CONFIG_KEY_VALIDATION_QUERY));
-      log.info("[I92] Connection OK !" );
+  public void validateConfiguration(
+      KeycloakSession session, RealmModel realm, ComponentModel config)
+      throws ComponentValidationException {
+    EntityManager em = null;
+    try {
+      em = createEntityManager(session, config);
+      try (var repository = new YccUserRepository(em)) {
+        int userCount = repository.getCount();
+        log.info("Connected to the database and found {} users", userCount);
+      }
+    } catch (Exception ex) {
+      String msg = "Failed to validate the database configuration: " + ex.getMessage();
+      log.warn(msg, ex);
+      throw new ComponentValidationException(msg, ex);
+    } finally {
+      if (em != null) {
+        em.close();
+      }
     }
-    catch(Exception ex) {
-      log.warn("[W94] Unable to validate connection: ex={}", ex.getMessage());
-      throw new ComponentValidationException("Unable to validate database connection",ex);
-    }
-  }
-
-  // TODO
-  @Override
-  public void onUpdate(KeycloakSession session, RealmModel realm, ComponentModel oldModel, ComponentModel newModel) {
-    log.info("[I94] onUpdate()" );
-  }
-
-  // TODO
-  @Override
-  public void onCreate(KeycloakSession session, RealmModel realm, ComponentModel model) {
-    log.info("[I99] onCreate()" );
   }
 
   @Override
   public YccUserStorageProvider create(
       @NonNull KeycloakSession session, @NonNull ComponentModel model) {
-    EntityManager entityManager =
-        session.getProvider(JpaConnectionProvider.class, "ycc-db").getEntityManager();
-    YccUserRepository repository = new YccUserRepository(entityManager);
+    YccUserRepository repository = new YccUserRepository(createEntityManager(session, model));
     return new YccUserStorageProvider(session, model, repository);
+  }
+
+  private static EntityManager createEntityManager(
+      @NonNull KeycloakSession session, @NonNull ComponentModel model) {
+    String dataSourceName = model.get(DATA_SOURCE_PROPERTY_NAME);
+    if (dataSourceName == null) {
+      throw new YccKeycloakProviderException("Data source name is null");
+    }
+
+    var provider = session.getProvider(JpaConnectionProvider.class, dataSourceName);
+    if (provider == null) {
+      throw new YccKeycloakProviderException(
+          "Data source not found (could not locate JpaConnectionProvider): " + dataSourceName);
+    }
+
+    var em = provider.getEntityManager();
+
+    if (em == null) {
+      throw new YccKeycloakProviderException(
+          "Entity manager not found for data source " + dataSourceName);
+    }
+
+    return em;
   }
 
   @Override
   public String getId() {
-    return "ycc-user-provider";
+    return ID;
+  }
+
+  @Override
+  public String getHelpText() {
+    return HELP_TEXT;
   }
 }

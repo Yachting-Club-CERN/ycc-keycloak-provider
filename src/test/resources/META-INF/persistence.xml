@@ -7,11 +7,12 @@
   <persistence-unit name="ycc-db-local" transaction-type="RESOURCE_LOCAL">
     <class>ch.cern.ycc.keycloakprovider.YccUserEntity</class>
     <properties>
+      <property name="javax.persistence.transactionType" value="RESOURCE_LOCAL"/>
+
       <property name="javax.persistence.jdbc.driver" value="oracle.jdbc.OracleDriver"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
       <property name="javax.persistence.jdbc.user" value="ycclocal"/>
       <property name="javax.persistence.jdbc.password" value="changeit"/>
-      <property name="javax.persistence.transactionType" value="RESOURCE_LOCAL" />
 
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
       <property name="hibernate.show_sql" value="true"/>
