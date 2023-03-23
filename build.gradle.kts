@@ -50,4 +50,22 @@ publishing {
             configurationJarTasks.forEach { artifact(it) }
         }
     }
+
+    if (version != null && !(version as String).contains("-SNAPSHOT")) {
+        logger.quiet("Enabling publication for version {}", version)
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/Yachting-Club-CERN/ycc-keycloak-provider")
+                credentials {
+                    username =
+                        project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                }
+            }
+        }
+    } else {
+        logger.quiet("Skipping publication for version {}", version)
+    }
 }
