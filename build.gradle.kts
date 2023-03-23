@@ -3,6 +3,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 plugins {
     id("dev.lajoscseppento.ruthless.java-library")
     id("org.sonarqube") version "4.0.0.2929"
+    `maven-publish`
 }
 
 val keycloakVersion = "21.0.1"
@@ -22,6 +23,7 @@ configurations {
 
 // Generate tasks for creating configuration JARs
 val configuration = java.sourceSets.register("configuration-template")
+val configurationJarTasks = mutableListOf<TaskProvider<Jar>>()
 
 listOf("ycc-db-local", "ycc-db-test", "ycc-db-prod").forEach { env ->
     val generate = tasks.register<Sync>("generate-$env") {
@@ -34,8 +36,36 @@ listOf("ycc-db-local", "ycc-db-test", "ycc-db-prod").forEach { env ->
         from(generate)
         archiveClassifier.set(env)
     }
+    configurationJarTasks.add(jar)
 
     tasks.named("assemble") {
         dependsOn(jar)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            configurationJarTasks.forEach { artifact(it) }
+        }
+    }
+
+    if (version != null && !(version as String).contains("-SNAPSHOT")) {
+        logger.quiet("Enabling publication for version {}", version)
+
+        repositories {
+            maven {
+                name = "GitHubPackages"
+                url = uri("https://maven.pkg.github.com/Yachting-Club-CERN/ycc-keycloak-provider")
+                credentials {
+                    username =
+                        project.findProperty("gpr.user") as String? ?: System.getenv("USERNAME")
+                    password = project.findProperty("gpr.key") as String? ?: System.getenv("TOKEN")
+                }
+            }
+        }
+    } else {
+        logger.quiet("Skipping publication for version {}", version)
     }
 }
