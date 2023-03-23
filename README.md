@@ -46,9 +46,17 @@ either from the production or the test database.)
 Clone this repo and use your favourite editor (if in doubt, just use IntelliJ Commuinity Edition).
 This is a Gradle project.
 
-For localdevelopment default H2 database is perfect, but you can also use `ycckeycloaklocal`
+For local development default H2 database is perfect, but you can also use `ycckeycloaklocal`
 in `ycc-db-local`, especially if you want to test migration. See `ycc-infra/ycc-keycloak-dev` for
 more details.
+
+### Release Procedure
+
+1. Release commit: fix version, finalise change log (don't forget about the links in the bottom of
+   the change log)
+2. Check CI for success. Check that the packages were published too.
+3. Publish release on GitHub
+4. Bump version
 
 ## Notes
 
