@@ -8,3 +8,67 @@ For developers, start by reading
 [this demo](https://github.com/keycloak/keycloak-quickstarts/tree/latest/user-storage-jpa) and
 [this one](https://github.com/dasniko/keycloak-user-spi-demo). Also, there is
 an [official documentation](https://www.keycloak.org/docs/latest/server_development/index.html#_user-storage-spi).
+
+## Configuration
+
+See `conf/keycloak.conf`. For the deployed instance use the dedicated database.
+
+Health and metrics endpoints should be enabled by default, but only accessible inside the cluster.
+
+### JPA Configuration
+
+Persistence units must be created in `persistence.xml` and Quarkus eagerly creates all connections
+upon startup. It is possible to put part of the configuration into `conf/quarkus.properties`.
+
+This gives that `ycc-keycloak-provider` comes with several JARs:
+
+* `ycc-keycloak-provider-VERSION.jar`: provider implementation
+* `ycc-keycloak-provider-VERSION-ycc-db-prod.jar`: `persistence.xml` for production database,
+  persistence unit: `ycc-db-prod`
+* `ycc-keycloak-provider-VERSION-ycc-db-test.jar`: `persistence.xml` for test database, persistence
+  unit: `ycc-db-test`
+* `ycc-keycloak-provider-VERSION-ycc-db-local.jar`: `persistence.xml` for local database,
+  persistence unit: `ycc-db-local`
+
+If any of these persistence JARs is present in Keycloak's `providers/` directory, the credentials
+*must be specified* in `conf/quarkus.properties` for all of them, otherwise Keycloak would not
+start. (This can be done when the container is started.) If `local` is present, the local database
+*must be running*, otherwise Keycloak would not start.
+
+(However, this allows us to only have one Keycloak instance deployed which can serve several realms,
+either from the production or the test database.)
+
+## Development
+
+Clone this repo and use your favourite editor (if in doubt, just use IntelliJ Commuinity Edition).
+This is a Gradle project.
+
+For localdevelopment default H2 database is perfect, but you can also use `ycckeycloaklocal`
+in `ycc-db-local`, especially if you want to test migration. See `ycc-infra/ycc-keycloak-dev` for
+more details.
+
+## Notes
+
+### JPA Configuration Dead Ends (Lajos)
+
+I have tried *many-many* ways of facilitating the configuration. From the code point of view
+using `EntityManager` (JPA/Hibernate) is beneficial. However, Keycloak+Quarkus complicates the view.
+
+The root problem was that Quarkus eagerly reads `persistence.xml` (regardless the settings and
+whether `beans.xml` is present). This file cannot be renamed and is essential to JPA `EntityManager`
+creation.
+
+What I did not manage to make work reliable under Keycloak 21 as of 2023-03:
+
+* Making Quarkus to not read `persistence.xml` (the properties simply do not work at all in the
+  setup)
+* Complete dynamic configuration of JPA (bypassing `persistence.xml`): first of all needs a lot of
+  code, and in the end it did not work as expected. Cannot recommend at all.
+* "Fake placeholder" in `persistence.xml` and dynamic runtime reconfiguration: not Quarkus
+  friendly:
+
+  ```
+  Failed to validate the database configuration: javax.persistence.PersistenceException: 
+  The FastbootHibernateProvider PersistenceProvider can not support runtime provided properties. 
+  Make sure you set all properties you need in the configuration resources before building the application.
+  ```

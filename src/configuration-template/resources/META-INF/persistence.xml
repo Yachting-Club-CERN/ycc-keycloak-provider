@@ -4,12 +4,12 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
 		http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
-  <persistence-unit name="ycc-db" transaction-type="JTA">
+  <persistence-unit name="@name@" transaction-type="JTA">
     <class>ch.cern.ycc.keycloakprovider.YccUserEntity</class>
     <properties>
-      <property name="hibernate.connection.datasource" value="ycc-db" />
-      <property name="javax.persistence.transactionType" value="JTA" />
+      <property name="javax.persistence.transactionType" value="JTA"/>
 
+      <property name="hibernate.connection.datasource" value="@name@"/>
       <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
       <property name="hibernate.show_sql" value="false"/>
       <property name="hibernate.format_sql" value="true"/>
