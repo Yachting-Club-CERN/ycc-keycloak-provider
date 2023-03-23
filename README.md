@@ -49,18 +49,18 @@ more details.
 
 ## Notes
 
-### JPA Configuration Dead Ends
+### JPA Configuration Dead Ends (Lajos)
 
-I (Lajos) have tried *many-many* ways of facilitating the configuration. From the code point of view
+I have tried *many-many* ways of facilitating the configuration. From the code point of view
 using `EntityManager` (JPA/Hibernate) is beneficial. However, Keycloak+Quarkus complicates the view.
 
 The root problem was that Quarkus eagerly reads `persistence.xml` (regardless the settings and
 whether `beans.xml` is present). This file cannot be renamed and is essential to JPA `EntityManager`
 creation.
 
-What I did NOT manage to make work reliable under Keycloak 21 as of 2023-03:
+What I did not manage to make work reliable under Keycloak 21 as of 2023-03:
 
-* Making Quarkus to NOT read `persistence.xml` (the properties simply do not work at all in the
+* Making Quarkus to not read `persistence.xml` (the properties simply do not work at all in the
   setup)
 * Complete dynamic configuration of JPA (bypassing `persistence.xml`): first of all needs a lot of
   code, and in the end it did not work as expected. Cannot recommend at all.

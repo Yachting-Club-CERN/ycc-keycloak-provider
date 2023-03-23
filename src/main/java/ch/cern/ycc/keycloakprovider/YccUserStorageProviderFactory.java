@@ -21,7 +21,7 @@ import org.keycloak.storage.UserStorageProviderFactory;
 @Slf4j
 public class YccUserStorageProviderFactory
     implements UserStorageProviderFactory<YccUserStorageProvider> {
-  private static final String ID = "ycc-user-provider";
+  private static final String ID = "YCC Oracle Users";
   private static final String HELP_TEXT =
       "This provider is able to federate users from the YCC Oracle Database";
   private static final String DATA_SOURCE_PROPERTY_NAME = "dataSource";
