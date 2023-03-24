@@ -46,9 +46,18 @@ either from the production or the test database.)
 Clone this repo and use your favourite editor (if in doubt, just use IntelliJ Commuinity Edition).
 This is a Gradle project.
 
-For local development default H2 database is perfect, but you can also use `ycckeycloaklocal`
-in `ycc-db-local`, especially if you want to test migration. See `ycc-infra/ycc-keycloak-dev` for
-more details.
+For local development it is recommended to use `ycckeycloaklocal` (in `ycc-db-local`), since this
+also allows to persist changes, test Keycloak upgrades, etc., while having test user federation.
+See `ycc-infra/ycc-keycloak-dev` for more details.
+
+Prepare some time for adding new features - to test integration with Keycloak, the iteration is the
+following:
+
+1. Code
+2. Assemble/build
+3. Copy JARs to Keycloak instance
+4. Restart Keycloak instance
+5. Log in again and test
 
 ### Release Procedure
 
