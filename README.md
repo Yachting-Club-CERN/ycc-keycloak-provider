@@ -25,18 +25,18 @@ upon startup. It is possible to put part of the configuration into `conf/quarkus
 
 This gives that `ycc-keycloak-provider` comes with several JARs:
 
-* `ycc-keycloak-provider-VERSION.jar`: provider implementation
-* `ycc-keycloak-provider-VERSION-ycc-db-prod.jar`: `persistence.xml` for production database,
+- `ycc-keycloak-provider-VERSION.jar`: provider implementation
+- `ycc-keycloak-provider-VERSION-ycc-db-prod.jar`: `persistence.xml` for production database,
   persistence unit: `ycc-db-prod`
-* `ycc-keycloak-provider-VERSION-ycc-db-test.jar`: `persistence.xml` for test database, persistence
+- `ycc-keycloak-provider-VERSION-ycc-db-test.jar`: `persistence.xml` for test database, persistence
   unit: `ycc-db-test`
-* `ycc-keycloak-provider-VERSION-ycc-db-local.jar`: `persistence.xml` for local database,
+- `ycc-keycloak-provider-VERSION-ycc-db-local.jar`: `persistence.xml` for local database,
   persistence unit: `ycc-db-local`
 
 If any of these persistence JARs is present in Keycloak's `providers/` directory, the credentials
-*must be specified* in `conf/quarkus.properties` for all of them, otherwise Keycloak would not
+_must be specified_ in `conf/quarkus.properties` for all of them, otherwise Keycloak would not
 start. (This can be done when the container is started.) If `local` is present, the local database
-*must be running*, otherwise Keycloak would not start.
+_must be running_, otherwise Keycloak would not start.
 
 (However, this allows us to only have one Keycloak instance deployed which can serve several realms,
 either from the production or the test database.)
@@ -48,7 +48,7 @@ This is a Gradle project.
 
 For local development it is recommended to use `ycckeycloaklocal` (in `ycc-db-local`), since this
 also allows to persist changes, test Keycloak upgrades, etc., while having test user federation.
-See `ycc-infra/ycc-keycloak-dev` for more details.
+See `ycc-infra/ycc-keycloak-local` for more details.
 
 Prepare some time for adding new features - to test integration with Keycloak, the iteration is the
 following:
@@ -71,7 +71,7 @@ following:
 
 ### JPA Configuration Dead Ends (Lajos)
 
-I have tried *many-many* ways of facilitating the configuration. From the code point of view
+I have tried _many-many_ ways of facilitating the configuration. From the code point of view
 using `EntityManager` (JPA/Hibernate) is beneficial. However, Keycloak+Quarkus complicates the view.
 
 The root problem was that Quarkus eagerly reads `persistence.xml` (regardless the settings and
@@ -80,15 +80,15 @@ creation.
 
 What I did not manage to make work reliable under Keycloak 21 as of 2023-03:
 
-* Making Quarkus to not read `persistence.xml` (the properties simply do not work at all in the
+- Making Quarkus to not read `persistence.xml` (the properties simply do not work at all in the
   setup)
-* Complete dynamic configuration of JPA (bypassing `persistence.xml`): first of all needs a lot of
+- Complete dynamic configuration of JPA (bypassing `persistence.xml`): first of all needs a lot of
   code, and in the end it did not work as expected. Cannot recommend at all.
-* "Fake placeholder" in `persistence.xml` and dynamic runtime reconfiguration: not Quarkus
+- "Fake placeholder" in `persistence.xml` and dynamic runtime reconfiguration: not Quarkus
   friendly:
 
   ```
-  Failed to validate the database configuration: javax.persistence.PersistenceException: 
-  The FastbootHibernateProvider PersistenceProvider can not support runtime provided properties. 
+  Failed to validate the database configuration: javax.persistence.PersistenceException:
+  The FastbootHibernateProvider PersistenceProvider can not support runtime provided properties.
   Make sure you set all properties you need in the configuration resources before building the application.
   ```
