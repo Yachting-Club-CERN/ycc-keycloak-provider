@@ -11,9 +11,9 @@ public final class Constants {
       "This provider is able to federate users from the YCC Oracle Database";
   public static final String DATA_SOURCE_PROPERTY_NAME = "dataSource";
 
-  public static final String YCC_USERS_GROUP = "ycc-users";
-  public static final String YCC_ACTIVE_MEMBER_ROLE = "ycc-active-member";
-  public static final String YCC_INACTIVE_MEMBER_ROLE = "ycc-inactive-member";
+  public static final String YCC_ALL_MEMBERS = "ycc-members-all-past-and-present";
+  public static final String YCC_ACTIVE_MEMBER_ROLE = "ycc-member-active";
+  public static final String YCC_INACTIVE_MEMBER_ROLE = "ycc-member-inactive";
 
   private Constants() {
     throw new UnsupportedOperationException();

@@ -107,7 +107,7 @@ public class YccUserAdapter extends AbstractUserAdapter {
   @Override
   protected Set<GroupModel> getGroupsInternal() {
     // This is a good location to add extra groups
-    return Set.of(createOrGetGroup(Constants.YCC_USERS_GROUP));
+    return Set.of(createOrGetGroup(Constants.YCC_ALL_MEMBERS));
   }
 
   @Override

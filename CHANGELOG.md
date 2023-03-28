@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Auto-create group `ycc-members-all-past-and-present` (contains all members)
+- Auto-create role `ycc-member-active` (contains active members)
+- Auto-create role `ycc-member-inactive` (contains inactive members)
+
 ## [0.1.0] - 2023-03-23
 
 ### Added

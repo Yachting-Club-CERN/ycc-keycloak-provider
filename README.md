@@ -12,6 +12,13 @@ For developers, start by reading
 [this one](https://github.com/dasniko/keycloak-user-spi-demo). Also, there is
 an [official documentation](https://www.keycloak.org/docs/latest/server_development/index.html#_user-storage-spi).
 
+## Features
+
+- Federate YCC users from the Oracle database (with existing credentials)
+- Auto-create group `ycc-members-all-past-and-present` (contains all members)
+- Auto-create role `ycc-member-active` (contains active members)
+- Auto-create role `ycc-member-inactive` (contains inactive members) 
+
 ## Configuration
 
 See `conf/keycloak.conf`. For the deployed instance use the dedicated database.
