@@ -90,9 +90,10 @@ public class YccUserAdapter extends AbstractUserAdapter {
   }
 
   /**
-   * @deprecated Use {@link #getAttributeStream(String)} instead
+   * @deprecated Use {@link #getAttributeStream(String)} instead. To be removed when Keycloak
+   *     removes it.
    */
-  @Deprecated
+  @Deprecated(forRemoval = true)
   @Override
   public List<String> getAttribute(String name) {
     return getAttributes().get(name);
@@ -100,7 +101,8 @@ public class YccUserAdapter extends AbstractUserAdapter {
 
   @Override
   public Stream<String> getAttributeStream(String name) {
-    return getAttribute(name).stream();
+    List<String> attr = getAttributes().get(name);
+    return attr == null ? Stream.empty() : attr.stream();
   }
 
   @Override
