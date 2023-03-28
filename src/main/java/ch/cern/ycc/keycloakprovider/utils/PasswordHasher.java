@@ -33,6 +33,12 @@ public final class PasswordHasher {
     throw new UnsupportedOperationException();
   }
 
+  /**
+   * Hashes a password.
+   *
+   * @param password password
+   * @return hash
+   */
   public static String hash(@NonNull String password) {
     SecureRandom random = new SecureRandom();
     byte[] salt = new byte[SALT_BYTE_SIZE];
@@ -52,6 +58,13 @@ public final class PasswordHasher {
     }
   }
 
+  /**
+   * Verifies a password.
+   *
+   * @param password password
+   * @param passwordHash hash
+   * @return <code>true</code> if valid, otherwise <code>false</code>
+   */
   public static boolean verify(@NonNull String password, @NonNull String passwordHash) {
     String[] parts = passwordHash.split(":", 4);
     if (parts.length != 4) {

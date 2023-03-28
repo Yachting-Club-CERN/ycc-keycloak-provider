@@ -2,6 +2,7 @@ package ch.cern.ycc.keycloakprovider;
 
 import ch.cern.ycc.keycloakprovider.db.UserEntity;
 import ch.cern.ycc.keycloakprovider.db.UserRepository;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -35,6 +36,7 @@ public class YccUserAdapter extends AbstractUserAdapter {
    * @param realm Keycloak realm
    * @param model Keycloak component model
    * @param user YCC user entity
+   * @param repository user repository
    */
   public YccUserAdapter(
       @NonNull KeycloakSession session,
@@ -78,15 +80,27 @@ public class YccUserAdapter extends AbstractUserAdapter {
   }
 
   @Override
+  public String getFirstAttribute(String name) {
+    List<String> attr = getAttribute(name);
+    if (attr == null || attr.isEmpty()) {
+      return null;
+    } else {
+      return attr.get(0);
+    }
+  }
+
+  /**
+   * @deprecated Use {@link #getAttributeStream(String)} instead
+   */
+  @Deprecated
+  @Override
   public List<String> getAttribute(String name) {
-    // TODO
-    return super.getAttribute(name);
+    return getAttributes().get(name);
   }
 
   @Override
   public Stream<String> getAttributeStream(String name) {
-    // TODO
-    return super.getAttributeStream(name);
+    return getAttribute(name).stream();
   }
 
   @Override
@@ -112,13 +126,15 @@ public class YccUserAdapter extends AbstractUserAdapter {
 
   @Override
   protected Set<RoleModel> getRoleMappingsInternal() {
-    return Set.of(
-        createOrGetRole(
-            repository.isActiveMember(user)
-                ? Constants.YCC_ACTIVE_MEMBER_ROLE
-                : Constants.YCC_INACTIVE_MEMBER_ROLE)
-        // This is a good location to add extra roles
-        );
+    var roles = new LinkedHashSet<RoleModel>();
+
+    if (repository.isActiveMember(user)) {
+      roles.add(createOrGetRole(Constants.YCC_ACTIVE_MEMBER_ROLE));
+    }
+
+    // This is a good location to add extra roles
+
+    return Set.copyOf(roles);
   }
 
   @Override

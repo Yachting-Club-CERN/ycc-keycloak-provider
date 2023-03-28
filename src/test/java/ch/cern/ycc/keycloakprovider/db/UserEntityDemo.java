@@ -1,6 +1,8 @@
 package ch.cern.ycc.keycloakprovider.db;
 
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
@@ -8,11 +10,23 @@ import javax.persistence.Persistence;
  *
  * @author Lajos Cseppento
  */
-class UserEntityDemo {
+public class UserEntityDemo {
   public static void main(String[] args) {
-    var entityManagerFactory = Persistence.createEntityManagerFactory("ycc-db-local");
-    var entityManager = entityManagerFactory.createEntityManager();
+    EntityManagerFactory entityManagerFactory =
+        Persistence.createEntityManagerFactory("ycc-db-local");
+    EntityManager entityManager = null;
 
+    try {
+      entityManager = entityManagerFactory.createEntityManager();
+      demo(entityManager);
+    } finally {
+      if (entityManager != null) {
+        entityManager.close();
+      }
+    }
+  }
+
+  private static void demo(EntityManager entityManager) {
     System.out.println("> Users:");
     List<UserEntity> allUsers =
         entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity.class).getResultList();

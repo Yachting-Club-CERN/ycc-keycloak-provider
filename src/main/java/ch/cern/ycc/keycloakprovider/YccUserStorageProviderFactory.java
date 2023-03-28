@@ -22,6 +22,7 @@ import org.keycloak.storage.UserStorageProviderFactory;
 @Slf4j
 public class YccUserStorageProviderFactory
     implements UserStorageProviderFactory<YccUserStorageProvider> {
+  private static final String DATA_SOURCE_PROPERTY_NAME = "dataSource";
   private final List<ProviderConfigProperty> configurationProperties;
 
   /** Constructor. Initialises configuration metadata. */
@@ -29,7 +30,7 @@ public class YccUserStorageProviderFactory
     this.configurationProperties =
         ProviderConfigurationBuilder.create()
             .property()
-            .name(Constants.DATA_SOURCE_PROPERTY_NAME)
+            .name(DATA_SOURCE_PROPERTY_NAME)
             .label("Data source name")
             .type(ProviderConfigProperty.STRING_TYPE)
             .helpText(
@@ -50,10 +51,9 @@ public class YccUserStorageProviderFactory
     EntityManager em = null;
     try {
       em = createEntityManager(session, config);
-      try (var repository = new UserRepository(em)) {
-        int userCount = repository.getCount();
-        log.info("Connected to the database and found {} users", userCount);
-      }
+      var repository = new UserRepository(em);
+      int userCount = repository.getCount();
+      log.info("Connected to the database and found {} users", userCount);
     } catch (Exception ex) {
       String msg = "Failed to validate the database configuration: " + ex.getMessage();
       log.warn(msg, ex);
@@ -74,7 +74,7 @@ public class YccUserStorageProviderFactory
 
   private static EntityManager createEntityManager(
       @NonNull KeycloakSession session, @NonNull ComponentModel model) {
-    String dataSourceName = model.get(Constants.DATA_SOURCE_PROPERTY_NAME);
+    String dataSourceName = model.get(DATA_SOURCE_PROPERTY_NAME);
     if (dataSourceName == null) {
       throw new YccKeycloakProviderException("Data source name is null");
     }

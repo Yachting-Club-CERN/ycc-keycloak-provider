@@ -172,6 +172,7 @@ public class YccUserStorageProvider
 
   @Override
   public void close() {
-    repository.close();
+    // Note: Reference implementation does not close the EntityManager
+    // https://github.com/keycloak/keycloak-quickstarts/blob/9f1470474af85a9ab3ac0ba64ed0cc68dbd2b921/user-storage-jpa/src/main/java/org/keycloak/quickstart/storage/user/MyUserStorageProvider.java#L92
   }
 }

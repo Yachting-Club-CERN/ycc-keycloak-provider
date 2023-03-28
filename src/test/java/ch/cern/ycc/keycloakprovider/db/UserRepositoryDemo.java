@@ -3,6 +3,8 @@ package ch.cern.ycc.keycloakprovider.db;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 /**
@@ -10,11 +12,27 @@ import javax.persistence.Persistence;
  *
  * @author Lajos Cseppento
  */
-class UserRepositoryDemo {
+public class UserRepositoryDemo {
   public static void main(String[] args) {
-    var entityManagerFactory = Persistence.createEntityManagerFactory("ycc-db-local");
-    var entityManager = entityManagerFactory.createEntityManager();
+    EntityManagerFactory entityManagerFactory =
+        Persistence.createEntityManagerFactory("ycc-db-local");
+    EntityManager entityManager = null;
+
+    try {
+      entityManager = entityManagerFactory.createEntityManager();
+      demo(entityManager);
+    } finally {
+      if (entityManager != null) {
+        entityManager.close();
+      }
+    }
+  }
+
+  private static void demo(EntityManager entityManager) {
     var repository = new UserRepository(entityManager);
+
+    System.out.println("User 1: " + repository.findById(1));
+    System.out.println("User 12345678: " + repository.findById(12345678));
 
     Map<Boolean, List<MemberInfo>> memberInfosByActivity =
         repository

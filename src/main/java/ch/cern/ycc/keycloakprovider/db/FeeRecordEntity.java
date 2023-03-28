@@ -1,6 +1,7 @@
 package ch.cern.ycc.keycloakprovider.db;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,30 +30,37 @@ import lombok.ToString;
         "SELECT fr from FeeRecordEntity fr "
             + "WHERE fr.memberId = :memberId AND financialYear = :financialYear")
 public class FeeRecordEntity implements Serializable {
+  /** Member ID. */
   @Id
   @Column(name = "MEMBER_ID")
   private long memberId;
 
+  /** Financial year, 4-digit. */
   @Id
   @Column(name = "YEAR_F")
   private int financialYear;
 
+  /** Payment date. */
   @Id
   @Column(name = "PAID_DATE")
-  private ZonedDateTime paymentDate;
+  private LocalDate paymentDate;
 
+  /** Payment mode, usually "UBS". */
   @Id
   @Column(name = "PAID_MODE")
   private String paymentMode;
 
+  /** Fee amount paid. */
   @Id
   @Column(name = "FEE")
   private int fee;
 
+  /** Date when the fee record was entered. */
   @Id
   @Column(name = "ENTERED_DATE")
   private ZonedDateTime entryDate;
 
+  /** Payment ID. */
   @Id
   @Column(name = "PAYMENTID")
   private int paymentId;
