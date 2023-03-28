@@ -81,12 +81,8 @@ public class YccUserAdapter extends AbstractUserAdapter {
 
   @Override
   public String getFirstAttribute(String name) {
-    List<String> attr = getAttribute(name);
-    if (attr == null || attr.isEmpty()) {
-      return null;
-    } else {
-      return attr.get(0);
-    }
+    List<String> attr = getAttributes().get(name);
+    return attr == null || attr.isEmpty() ? null : attr.get(0);
   }
 
   /**
