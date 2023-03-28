@@ -17,7 +17,6 @@ an [official documentation](https://www.keycloak.org/docs/latest/server_developm
 - Federate YCC users from the Oracle database (with existing credentials)
 - Auto-create group `ycc-members-all-past-and-present` (contains all members)
 - Auto-create role `ycc-member-active` (contains active members)
-- Auto-create role `ycc-member-inactive` (contains inactive members)
 
 ## How to Extend Attributes, Groups and Roles
 
@@ -26,9 +25,9 @@ Recommendation:
 - Use *attributes* for property-like information/extra metadata (e.g., birthday, nationality).
   Prefix attributes with `ycc.` (tip: it can be a nested object)
 - Use *groups* for grouping users, without any relation to permissions. Prefix groups with `ycc-`,
-  e.g., `ycc-member-active`
+  e.g., `ycc-members-all-past-and-present`
 - Use *roles* for giving permissions to users, e.g., active, committee, boat licence. Prefix roles
-  with `ycc-`, e.g., `ycc-members-all-past-and-present`
+  with `ycc-`, e.g., `ycc-member-active`
 
 For groups and roles use the `id = name` convention for simplicity (FYI the `name` is exposed to the
 clients). Attributes, groups and roles are available in the as user info on the client side if the
