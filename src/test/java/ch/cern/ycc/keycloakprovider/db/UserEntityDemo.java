@@ -1,4 +1,4 @@
-package ch.cern.ycc.keycloakprovider;
+package ch.cern.ycc.keycloakprovider.db;
 
 import java.util.List;
 import javax.persistence.EntityManager;
@@ -10,18 +10,28 @@ import javax.persistence.Persistence;
  *
  * @author Lajos Cseppento
  */
-class YccUserEntityDemo {
+public class UserEntityDemo {
   public static void main(String[] args) {
-    EntityManagerFactory emf = Persistence.createEntityManagerFactory("ycc-db-local");
-    EntityManager entityManager = emf.createEntityManager();
+    EntityManagerFactory entityManagerFactory =
+        Persistence.createEntityManagerFactory("ycc-db-local");
+    EntityManager entityManager = null;
 
+    try {
+      entityManager = entityManagerFactory.createEntityManager();
+      demo(entityManager);
+    } finally {
+      if (entityManager != null) {
+        entityManager.close();
+      }
+    }
+  }
+
+  private static void demo(EntityManager entityManager) {
     System.out.println("> Users:");
-    List<YccUserEntity> allUsers =
-        entityManager
-            .createQuery("SELECT u FROM YccUserEntity u", YccUserEntity.class)
-            .getResultList();
+    List<UserEntity> allUsers =
+        entityManager.createQuery("SELECT u FROM UserEntity u", UserEntity.class).getResultList();
 
-    for (YccUserEntity user : allUsers) {
+    for (UserEntity user : allUsers) {
       System.out.println(user);
     }
     System.out.println();
@@ -29,18 +39,18 @@ class YccUserEntityDemo {
     System.out.println("> User count:");
     int userCount =
         entityManager
-            .createQuery("SELECT COUNT(u) FROM YccUserEntity u", Long.class)
+            .createQuery("SELECT COUNT(u) FROM UserEntity u", Long.class)
             .getSingleResult()
             .intValue();
     System.out.println(userCount);
     System.out.println();
 
     System.out.println("> Search:");
-    YccUserEntity searchResult =
+    UserEntity searchResult =
         entityManager
             .createQuery(
-                "SELECT u FROM YccUserEntity u WHERE lower(u.username)=lower(:usernameOrEmail) OR lower(u.email)=lower(:usernameOrEmail)",
-                YccUserEntity.class)
+                "SELECT u FROM UserEntity u WHERE lower(u.username)=lower(:usernameOrEmail) OR lower(u.email)=lower(:usernameOrEmail)",
+                UserEntity.class)
             .setParameter("usernameOrEmail", "DHOGaN")
             .getResultStream()
             .findAny()
@@ -50,13 +60,13 @@ class YccUserEntityDemo {
     System.out.println();
 
     System.out.println("> Search with null:");
-    List<YccUserEntity> nullSearchResult =
+    List<UserEntity> nullSearchResult =
         entityManager
-            .createNamedQuery("YccUserEntity.search", YccUserEntity.class)
+            .createNamedQuery("UserEntity.search", UserEntity.class)
             .setParameter("search", null)
             .getResultStream()
             .toList();
-    for (YccUserEntity user : nullSearchResult) {
+    for (UserEntity user : nullSearchResult) {
       System.out.println(user);
     }
     System.out.println(nullSearchResult.size());

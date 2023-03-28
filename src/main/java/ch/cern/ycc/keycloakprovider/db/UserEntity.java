@@ -1,4 +1,4 @@
-package ch.cern.ycc.keycloakprovider;
+package ch.cern.ycc.keycloakprovider.db;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,34 +20,33 @@ import lombok.ToString;
 @Entity
 @Table(name = "WEB_LOGON")
 @SecondaryTable(name = "MEMBERS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ID"))
-@NamedQuery(name = "YccUserEntity.getCount", query = "SELECT COUNT(u) FROM YccUserEntity u")
+@NamedQuery(name = "UserEntity.getCount", query = "SELECT COUNT(u) FROM UserEntity u")
+@NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u ORDER BY u.username")
 @NamedQuery(
-    name = "YccUserEntity.findAll",
-    query = "SELECT u FROM YccUserEntity u ORDER BY u.username")
+    name = "UserEntity.findByUsername",
+    query = "SELECT u FROM UserEntity u WHERE lower(u.username) = lower(:username)")
 @NamedQuery(
-    name = "YccUserEntity.findByUsername",
-    query = "SELECT u FROM YccUserEntity u " + "WHERE lower(u.username) = lower(:username)")
+    name = "UserEntity.findByEmail",
+    query = "SELECT u FROM UserEntity u WHERE lower(u.email) = lower(:email)")
 @NamedQuery(
-    name = "YccUserEntity.findByEmail",
-    query = "SELECT u FROM YccUserEntity u " + "WHERE lower(u.email) = lower(:email)")
-@NamedQuery(
-    name = "YccUserEntity.findByUsernameOrEmail",
+    name = "UserEntity.findByUsernameOrEmail",
     query =
-        "SELECT u FROM YccUserEntity u "
-            + "WHERE lower(u.username) = lower(:usernameOrEmail) OR lower(u.email) = lower(:usernameOrEmail)")
+        "SELECT u FROM UserEntity u "
+            + "WHERE lower(u.username) = lower(:usernameOrEmail) "
+            + "OR lower(u.email) = lower(:usernameOrEmail)")
 @NamedQuery(
-    name = "YccUserEntity.search",
+    name = "UserEntity.search",
     query =
-        "SELECT u from YccUserEntity u "
+        "SELECT u from UserEntity u "
             + "WHERE lower(u.username) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.email) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.firstName) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.lastName) LIKE '%' || lower(:search) || '%' "
             + "ORDER BY u.username")
 @NamedQuery(
-    name = "YccUserEntity.searchByParameters",
+    name = "UserEntity.searchByParameters",
     query =
-        "SELECT u from YccUserEntity u "
+        "SELECT u from UserEntity u "
             + "WHERE lower(u.username) LIKE '%' || :username || '%' "
             + "AND lower(u.email) LIKE '%' || :email || '%' "
             + "AND lower(u.firstName) LIKE '%' || :firstName || '%' "
@@ -56,8 +55,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class YccUserEntity {
-
+public class UserEntity {
   @Id
   @GeneratedValue
   @Column(name = "MEMBER_ID")
@@ -77,4 +75,7 @@ public class YccUserEntity {
 
   @Column(table = "MEMBERS", name = "NAME")
   private String lastName;
+
+  @Column(table = "MEMBERS", name = "MEMBERSHIP")
+  private String membershipType;
 }

@@ -1,5 +1,6 @@
 package ch.cern.ycc.keycloakprovider;
 
+import ch.cern.ycc.keycloakprovider.db.UserRepository;
 import java.util.List;
 import javax.persistence.EntityManager;
 import lombok.NonNull;
@@ -21,11 +22,7 @@ import org.keycloak.storage.UserStorageProviderFactory;
 @Slf4j
 public class YccUserStorageProviderFactory
     implements UserStorageProviderFactory<YccUserStorageProvider> {
-  private static final String ID = "YCC Oracle Users";
-  private static final String HELP_TEXT =
-      "This provider is able to federate users from the YCC Oracle Database";
   private static final String DATA_SOURCE_PROPERTY_NAME = "dataSource";
-
   private final List<ProviderConfigProperty> configurationProperties;
 
   /** Constructor. Initialises configuration metadata. */
@@ -54,10 +51,9 @@ public class YccUserStorageProviderFactory
     EntityManager em = null;
     try {
       em = createEntityManager(session, config);
-      try (var repository = new YccUserRepository(em)) {
-        int userCount = repository.getCount();
-        log.info("Connected to the database and found {} users", userCount);
-      }
+      var repository = new UserRepository(em);
+      int userCount = repository.getCount();
+      log.info("Connected to the database and found {} users", userCount);
     } catch (Exception ex) {
       String msg = "Failed to validate the database configuration: " + ex.getMessage();
       log.warn(msg, ex);
@@ -72,7 +68,7 @@ public class YccUserStorageProviderFactory
   @Override
   public YccUserStorageProvider create(
       @NonNull KeycloakSession session, @NonNull ComponentModel model) {
-    YccUserRepository repository = new YccUserRepository(createEntityManager(session, model));
+    UserRepository repository = new UserRepository(createEntityManager(session, model));
     return new YccUserStorageProvider(session, model, repository);
   }
 
@@ -101,11 +97,11 @@ public class YccUserStorageProviderFactory
 
   @Override
   public String getId() {
-    return ID;
+    return Constants.ID;
   }
 
   @Override
   public String getHelpText() {
-    return HELP_TEXT;
+    return Constants.HELP_TEXT;
   }
 }
