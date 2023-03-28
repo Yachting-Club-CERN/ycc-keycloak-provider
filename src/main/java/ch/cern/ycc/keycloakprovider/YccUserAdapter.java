@@ -96,7 +96,8 @@ public class YccUserAdapter extends AbstractUserAdapter {
   @Deprecated(forRemoval = true)
   @Override
   public List<String> getAttribute(String name) {
-    return getAttributes().get(name);
+    List<String> attr = getAttributes().get(name);
+    return attr == null ? List.of() : attr;
   }
 
   @Override

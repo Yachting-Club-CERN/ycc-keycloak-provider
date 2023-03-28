@@ -24,15 +24,16 @@ import lombok.ToString;
 @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u ORDER BY u.username")
 @NamedQuery(
     name = "UserEntity.findByUsername",
-    query = "SELECT u FROM UserEntity u " + "WHERE lower(u.username) = lower(:username)")
+    query = "SELECT u FROM UserEntity u WHERE lower(u.username) = lower(:username)")
 @NamedQuery(
     name = "UserEntity.findByEmail",
-    query = "SELECT u FROM UserEntity u " + "WHERE lower(u.email) = lower(:email)")
+    query = "SELECT u FROM UserEntity u WHERE lower(u.email) = lower(:email)")
 @NamedQuery(
     name = "UserEntity.findByUsernameOrEmail",
     query =
         "SELECT u FROM UserEntity u "
-            + "WHERE lower(u.username) = lower(:usernameOrEmail) OR lower(u.email) = lower(:usernameOrEmail)")
+            + "WHERE lower(u.username) = lower(:usernameOrEmail) "
+            + "OR lower(u.email) = lower(:usernameOrEmail)")
 @NamedQuery(
     name = "UserEntity.search",
     query =

@@ -1,5 +1,6 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import ch.cern.ycc.keycloakprovider.Constants;
 import ch.cern.ycc.keycloakprovider.utils.PasswordHasher;
 import java.time.Year;
 import java.util.stream.Stream;
@@ -13,7 +14,6 @@ import lombok.NonNull;
  * @author Lajos Cseppento
  */
 public class UserRepository {
-  private static final String HONORARY_MEMBERSHIP_TYPE = "H";
   private final EntityManager entityManager;
 
   /**
@@ -157,7 +157,7 @@ public class UserRepository {
    * @return <code>true</code> if the user is an active member, otherwise <code>false</code>
    */
   public boolean isActiveMember(@NonNull UserEntity user) {
-    if (HONORARY_MEMBERSHIP_TYPE.equals(user.getMembershipType())) {
+    if (Constants.HONORARY_MEMBERSHIP_TYPE.equals(user.getMembershipType())) {
       return true;
     }
 

@@ -33,6 +33,7 @@ public class UserRepositoryDemo {
 
     System.out.println("User 1: " + repository.findById(1));
     System.out.println("User 12345678: " + repository.findById(12345678));
+    System.out.println();
 
     Map<Boolean, List<MemberInfo>> memberInfosByActivity =
         repository

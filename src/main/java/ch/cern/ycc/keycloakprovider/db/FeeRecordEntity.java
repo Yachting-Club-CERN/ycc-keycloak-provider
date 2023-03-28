@@ -16,7 +16,7 @@ import lombok.ToString;
  * Represents a YCC fee record (membership fee, course fee etc. paid by a user).
  *
  * <p>Note: this class has an inline {@link javax.persistence.IdClass} to create a code-only primary
- * key over all fields. Thus this class was also made {@link Serializable}.
+ * key over all fields. Thus, this class was also made {@link Serializable}.
  */
 @Entity
 @Table(name = "FEESRECORDS")
