@@ -1,5 +1,7 @@
 package ch.cern.ycc.keycloakprovider;
 
+import ch.cern.ycc.keycloakprovider.db.UserEntity;
+import ch.cern.ycc.keycloakprovider.db.UserRepository;
 import java.util.Map;
 import java.util.stream.Stream;
 import lombok.NonNull;
@@ -33,7 +35,7 @@ public class YccUserStorageProvider
 
   private final KeycloakSession session;
   private final ComponentModel model;
-  private final YccUserRepository repository;
+  private final UserRepository repository;
 
   /**
    * Creates an instance.
@@ -45,14 +47,14 @@ public class YccUserStorageProvider
   public YccUserStorageProvider(
       @NonNull KeycloakSession session,
       @NonNull ComponentModel model,
-      @NonNull YccUserRepository repository) {
+      @NonNull UserRepository repository) {
     this.session = session;
     this.model = model;
     this.repository = repository;
   }
 
-  private YccUserAdapter adapt(@NonNull RealmModel realm, YccUserEntity user) {
-    return user == null ? null : new YccUserAdapter(session, realm, model, user);
+  private YccUserAdapter adapt(@NonNull RealmModel realm, UserEntity user) {
+    return user == null ? null : new YccUserAdapter(session, realm, model, user, repository);
   }
 
   ////////////////////////////////////////

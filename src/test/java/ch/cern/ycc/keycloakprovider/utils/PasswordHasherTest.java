@@ -1,4 +1,4 @@
-package ch.cern.ycc.keycloakprovider;
+package ch.cern.ycc.keycloakprovider.utils;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class YccPasswordHasherTest {
+class PasswordHasherTest {
   @ValueSource(
       strings = {
         "password1",
@@ -17,15 +17,15 @@ class YccPasswordHasherTest {
     // Given
 
     // When
-    String passwordHash1 = YccPasswordHasher.hash(password);
-    String passwordHash2 = YccPasswordHasher.hash(password);
+    String passwordHash1 = PasswordHasher.hash(password);
+    String passwordHash2 = PasswordHasher.hash(password);
 
     // Then
-    assertThat(YccPasswordHasher.verify(password, passwordHash1)).isTrue();
-    assertThat(YccPasswordHasher.verify("invalid password", passwordHash1)).isFalse();
+    assertThat(PasswordHasher.verify(password, passwordHash1)).isTrue();
+    assertThat(PasswordHasher.verify("invalid password", passwordHash1)).isFalse();
 
-    assertThat(YccPasswordHasher.verify(password, passwordHash2)).isTrue();
-    assertThat(YccPasswordHasher.verify("invalid password", passwordHash2)).isFalse();
+    assertThat(PasswordHasher.verify(password, passwordHash2)).isTrue();
+    assertThat(PasswordHasher.verify("invalid password", passwordHash2)).isFalse();
   }
 
   @CsvSource({
@@ -48,7 +48,7 @@ class YccPasswordHasherTest {
     // Given
 
     // When
-    boolean valid = YccPasswordHasher.verify(password, passwordHash);
+    boolean valid = PasswordHasher.verify(password, passwordHash);
 
     // Then
     assertThat(valid).isTrue();
@@ -63,7 +63,7 @@ class YccPasswordHasherTest {
     // Given
 
     // When
-    boolean valid = YccPasswordHasher.verify(password, passwordHash);
+    boolean valid = PasswordHasher.verify(password, passwordHash);
 
     // Then
     assertThat(valid).isFalse();

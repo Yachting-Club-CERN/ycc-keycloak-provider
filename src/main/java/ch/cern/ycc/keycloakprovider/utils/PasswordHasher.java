@@ -1,5 +1,6 @@
-package ch.cern.ycc.keycloakprovider;
+package ch.cern.ycc.keycloakprovider.utils;
 
+import ch.cern.ycc.keycloakprovider.YccKeycloakProviderException;
 import java.nio.ByteBuffer;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -12,7 +13,7 @@ import lombok.NonNull;
  *
  * @author Lajos Cseppento
  */
-final class YccPasswordHasher {
+public final class PasswordHasher {
   private static final String HASH_PREFIX = "{X-PBKDF2}HMACSHA1";
   private static final int PBKDF2_ITERATIONS = 20000;
   private static final int SALT_BYTE_SIZE = 16;
@@ -28,11 +29,11 @@ final class YccPasswordHasher {
     }
   }
 
-  private YccPasswordHasher() {
+  private PasswordHasher() {
     throw new UnsupportedOperationException();
   }
 
-  static String hash(@NonNull String password) {
+  public static String hash(@NonNull String password) {
     SecureRandom random = new SecureRandom();
     byte[] salt = new byte[SALT_BYTE_SIZE];
     random.nextBytes(salt);
@@ -51,7 +52,7 @@ final class YccPasswordHasher {
     }
   }
 
-  static boolean verify(@NonNull String password, @NonNull String passwordHash) {
+  public static boolean verify(@NonNull String password, @NonNull String passwordHash) {
     String[] parts = passwordHash.split(":", 4);
     if (parts.length != 4) {
       throw new IllegalArgumentException("Invalid hash: " + passwordHash);
