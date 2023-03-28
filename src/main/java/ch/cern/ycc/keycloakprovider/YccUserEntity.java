@@ -39,10 +39,10 @@ import lombok.ToString;
     name = "YccUserEntity.search",
     query =
         "SELECT u from YccUserEntity u "
-            + "WHERE lower(u.username) LIKE '%' || :search || '%' "
-            + "OR lower(u.email) LIKE '%' || :search || '%' "
-            + "OR lower(u.firstName) LIKE '%' || :search || '%' "
-            + "OR lower(u.lastName) LIKE '%' || :search || '%' "
+            + "WHERE lower(u.username) LIKE '%' || lower(:search) || '%' "
+            + "OR lower(u.email) LIKE '%' || lower(:search) || '%' "
+            + "OR lower(u.firstName) LIKE '%' || lower(:search) || '%' "
+            + "OR lower(u.lastName) LIKE '%' || lower(:search) || '%' "
             + "ORDER BY u.username")
 @NamedQuery(
     name = "YccUserEntity.searchByParameters",
