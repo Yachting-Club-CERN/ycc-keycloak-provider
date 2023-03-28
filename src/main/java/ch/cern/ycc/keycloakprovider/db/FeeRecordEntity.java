@@ -20,7 +20,6 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "FEESRECORDS")
-// @IdClass(FeeRecordEntityId.class) // Code-only primary key
 @Getter
 @Setter
 @ToString
