@@ -19,7 +19,7 @@ public final class Constants {
    * Name of the group containing all members, past and present. Changing this value may trigger a
    * change in some clients.
    */
-  public static final String YCC_ALL_MEMBERS = "ycc-members-all-past-and-present";
+  public static final String YCC_ALL_MEMBERS_GROUP = "ycc-members-all-past-and-present";
   /**
    * Name of the role containing active members (paid membership fee for this year or honorary
    * member). Changing this triggers a change in all clients.
