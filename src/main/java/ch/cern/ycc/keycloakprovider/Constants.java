@@ -12,7 +12,7 @@ public final class Constants {
   public static final String HELP_TEXT =
       "This provider is able to federate users from the YCC Oracle Database";
 
-  /** Code of the hononary membership type. */
+  /** Code of the honorary membership type. */
   public static final String HONORARY_MEMBERSHIP_TYPE = "H";
 
   /**
