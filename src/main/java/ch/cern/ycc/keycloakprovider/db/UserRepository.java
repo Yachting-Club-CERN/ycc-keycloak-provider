@@ -147,7 +147,8 @@ public class UserRepository {
    *     </code>
    */
   public boolean verifyPassword(@NonNull String username, @NonNull String password) {
-    return PasswordHasher.verify(password, findByUsernameOrEmail(username).getPassword());
+    UserEntity user = findByUsernameOrEmail(username);
+    return user != null && PasswordHasher.verify(password, user.getPassword());
   }
 
   /**
