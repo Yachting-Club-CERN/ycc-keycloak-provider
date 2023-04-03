@@ -51,8 +51,13 @@ public final class PasswordHasher {
       PBEKeySpec spec = new PBEKeySpec(password.toCharArray(), salt, iterations, HASH_BIT_SIZE);
       byte[] hash = SECRET_KEY_FACTORY.generateSecret(spec).getEncoded();
       return String.format(
-          "%s:%s:%s:%s",
-          HASH_PREFIX, packInt(PBKDF2_ITERATIONS), ldapBase64encode(salt), ldapBase64encode(hash));
+              "%s:%s:%s:%s",
+              HASH_PREFIX,
+              // Legacy code removes padding
+              packInt(PBKDF2_ITERATIONS).replace("=", ""),
+              base64Encode(salt),
+              base64Encode(hash))
+          .replace(".", "+");
     } catch (Exception ex) {
       throw new YccKeycloakProviderException("Password hashing failed", ex);
     }
@@ -73,33 +78,42 @@ public final class PasswordHasher {
       throw new IllegalArgumentException("Unsupported hash: " + passwordHash);
     }
 
-    int iterations = unpackInt(parts[1]);
-    byte[] salt = ldapBase64decode(parts[2]);
+    int iterations = unpackInt(parts[1] + "=="); // Legacy code removes padding
+    byte[] salt = base64Decode(parts[2]);
 
     // Definitely one could do it better
-    return passwordHash.equals(hash(password, iterations, salt));
+    String hash = sanitise(passwordHash);
+    String hashNew = sanitise(hash(password, iterations, salt));
+    return hash.equals(hashNew);
+  }
+
+  private static String sanitise(@NonNull String value) {
+    // The data is not always consistent on '.' <=> '+' and '=' <=> '', so we are consistently
+    // removing them in this code to avoid that members cannot log in.
+    return value.replace(".", "+").replace("=", "");
   }
 
   private static String packInt(int value) {
     ByteBuffer bytes = ByteBuffer.allocate(Integer.BYTES);
     bytes.putInt(value);
-    return ldapBase64encode(bytes.array());
+    return base64Encode(bytes.array());
   }
 
   private static int unpackInt(@NonNull String value) {
     try {
-      byte[] bytes = ldapBase64decode(value);
+      byte[] bytes = base64Decode(value);
       return ByteBuffer.wrap(bytes).getInt();
     } catch (Exception ex) {
       throw new IllegalArgumentException("Cannot unpack integer from value: " + value, ex);
     }
   }
 
-  private static String ldapBase64encode(byte[] data) {
-    return Base64.getEncoder().encodeToString(data).replace("+", ".").replace("=", "");
+  private static String base64Encode(byte[] data) {
+    return Base64.getEncoder().encodeToString(data);
   }
 
-  private static byte[] ldapBase64decode(String str) {
+  private static byte[] base64Decode(String str) {
+    // From LDAP format if needed
     return Base64.getDecoder().decode(str.replace('.', '+'));
   }
 }
