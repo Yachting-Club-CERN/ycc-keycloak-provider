@@ -90,7 +90,7 @@ public final class PasswordHasher {
   private static String sanitise(@NonNull String value) {
     // The data is not always consistent on '.' <=> '+' and '=' <=> '', so we are consistently
     // removing them in this code to avoid that members cannot log in.
-    return value.replace("+", ".").replace("=", "");
+    return value.replace(".", "+").replace("=", "");
   }
 
   private static String packInt(int value) {
