@@ -1,5 +1,6 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
@@ -14,7 +15,8 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class LicenceInfoEntity {
+// Serializable: referred by LicenceEntity, which is Serializable
+public class LicenceInfoEntity implements Serializable {
   /** Licence info ID. */
   @Id
   @Column(name = "INFOID")
