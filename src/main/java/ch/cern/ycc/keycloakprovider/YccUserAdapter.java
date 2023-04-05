@@ -129,6 +129,13 @@ public class YccUserAdapter extends AbstractUserAdapter {
 
     if (repository.isActiveMember(user)) {
       roles.add(createOrGetRole(Constants.YCC_ACTIVE_MEMBER_ROLE));
+
+      repository
+          .findActiveLicences(user)
+          .forEach(
+              licence ->
+                  roles.add(
+                      createOrGetRole(Constants.YCC_LICENCE_ROLE_PREFIX + licence.toLowerCase())));
     }
 
     // This is a good location to add extra roles

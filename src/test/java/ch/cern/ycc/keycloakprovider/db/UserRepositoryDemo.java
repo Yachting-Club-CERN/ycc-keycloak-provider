@@ -1,5 +1,6 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -44,7 +45,8 @@ public class UserRepositoryDemo {
                         user.getId(),
                         user.getUsername(),
                         user.getMembershipType(),
-                        repository.isActiveMember(user)))
+                        repository.isActiveMember(user),
+                        repository.findActiveLicences(user)))
             .collect(Collectors.groupingBy(MemberInfo::active));
 
     System.out.println("> Active members:");
@@ -60,5 +62,10 @@ public class UserRepositoryDemo {
     System.out.println();
   }
 
-  private record MemberInfo(long id, String username, String membershipType, boolean active) {}
+  private record MemberInfo(
+      long id,
+      String username,
+      String membershipType,
+      boolean active,
+      Collection<String> activeLicences) {}
 }

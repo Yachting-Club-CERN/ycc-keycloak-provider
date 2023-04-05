@@ -3,6 +3,7 @@ package ch.cern.ycc.keycloakprovider.db;
 import ch.cern.ycc.keycloakprovider.Constants;
 import ch.cern.ycc.keycloakprovider.utils.PasswordHasher;
 import java.time.Year;
+import java.util.Collection;
 import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import javax.persistence.EntityManager;
@@ -170,5 +171,21 @@ public class UserRepository {
         .getResultStream()
         .findAny()
         .isPresent();
+  }
+
+  /**
+   * Queries active licences for a user.
+   *
+   * @param user user
+   * @return active licences
+   */
+  public Collection<String> findActiveLicences(@NonNull UserEntity user) {
+    return entityManager
+        .createNamedQuery("LicenceEntity.findAllActiveByMemberId", LicenceEntity.class)
+        .setParameter("memberId", user.getId())
+        .getResultStream()
+        .map(licence -> licence.getLicenceInfo().getLicence())
+        .sorted()
+        .toList();
   }
 }
