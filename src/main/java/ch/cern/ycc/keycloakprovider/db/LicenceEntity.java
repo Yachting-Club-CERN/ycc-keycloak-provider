@@ -38,7 +38,7 @@ public class LicenceEntity implements Serializable {
   @JoinColumn(name = "LICENCE_ID")
   private LicenceInfoEntity licenceInfo;
 
-  /** Key status, active/inactive. */
+  /** Key status, active/inactive, nullable. */
   @Column(name = "STATUS")
   private Boolean status;
 }
