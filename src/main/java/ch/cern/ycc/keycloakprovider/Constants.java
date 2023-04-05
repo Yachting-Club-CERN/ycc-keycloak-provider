@@ -25,6 +25,11 @@ public final class Constants {
    * member). Changing this triggers a change in all clients.
    */
   public static final String YCC_ACTIVE_MEMBER_ROLE = "ycc-member-active";
+  /**
+   * Prefix of the roles containing active members with a specific licence. E.g., "ycc-licence-m"
+   * for the M key.
+   */
+  public static final String YCC_LICENCE_ROLE_PREFIX = "ycc-licence-";
 
   private Constants() {
     throw new UnsupportedOperationException();

@@ -64,7 +64,7 @@ either from the production or the test database.)
 
 ## Development
 
-Clone this repo and use your favourite editor (if in doubt, just use IntelliJ Commuinity Edition).
+Clone this repo and use your favourite editor (if in doubt, just use IntelliJ Community Edition).
 This is a Gradle project.
 
 For local development it is recommended to use `ycckeycloaklocal` (in `ycc-db-local`), since this
