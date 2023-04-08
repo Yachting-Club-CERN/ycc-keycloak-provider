@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.3.1] - 2023-04-08
+
 ### Added
 
 - Add DEV environment support
@@ -36,7 +38,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial version for federating users from YCC Oracle Database to Keycloak
 
-[Unreleased]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/compare/v0.3.0...HEAD
+[Unreleased]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/compare/v0.3.1...HEAD
+[0.3.1]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v0.3.1
 [0.3.0]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v0.3.0
 [0.2.1]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v0.2.1
 [0.2.0]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v0.2.0
