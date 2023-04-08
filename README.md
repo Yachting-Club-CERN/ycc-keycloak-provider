@@ -29,8 +29,8 @@ Recommendation:
 - Use *roles* for giving permissions to users, e.g., active, committee, boat licence. Prefix roles
   with `ycc-`, e.g., `ycc-member-active`
 
-Attributes, groups and roles are available in the as user info on the client side if the
-client is authorised to access this information.
+Attributes, groups and roles are available in the as user info on the client side if the client is
+authorised to access this information.
 
 ## Configuration
 
