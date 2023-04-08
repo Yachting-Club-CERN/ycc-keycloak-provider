@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Create groups and roles by name only to support multiple YCC realms in the same Keycloak instance (and let Keycloak generate IDs)
+
 ## [0.3.1] - 2023-04-08
 
 ### Added
