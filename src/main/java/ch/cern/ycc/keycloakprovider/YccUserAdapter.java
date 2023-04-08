@@ -149,7 +149,7 @@ public class YccUserAdapter extends AbstractUserAdapter {
   }
 
   /**
-   * Gets a group with the specified name. Creates it dynamically if it does not exist.
+   * Gets the group with the specified name. Creates it dynamically if it does not exist.
    *
    * @param name name
    * @return the group
@@ -163,7 +163,7 @@ public class YccUserAdapter extends AbstractUserAdapter {
   }
 
   /**
-   * Gets a role with the specified name. Creates it dynamically if it does not exist.
+   * Gets the role with the specified name. Creates it dynamically if it does not exist.
    *
    * @param name name
    * @return the role
