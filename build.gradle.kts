@@ -25,7 +25,7 @@ configurations {
 val configuration = java.sourceSets.register("configuration-template")
 val configurationJarTasks = mutableListOf<TaskProvider<Jar>>()
 
-listOf("ycc-db-local", "ycc-db-test", "ycc-db-prod").forEach { env ->
+listOf("ycc-db-local", "ycc-db-dev", "ycc-db-test", "ycc-db-prod").forEach { env ->
     val generate = tasks.register<Sync>("generate-$env") {
         from(configuration.get().allSource)
         into(project.buildDir.toPath().resolve("tmp/generated-$env"))
