@@ -8,9 +8,8 @@ import javax.persistence.NamedQuery;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents a YCC user.
@@ -52,9 +51,8 @@ import lombok.ToString;
             + "AND lower(u.firstName) LIKE '%' || :firstName || '%' "
             + "AND lower(u.lastName) LIKE '%' || :lastName || '%' "
             + "ORDER BY u.username")
-@Getter
-@Setter
-@ToString
+@Data
+@NoArgsConstructor
 public class UserEntity {
   @Id
   @GeneratedValue

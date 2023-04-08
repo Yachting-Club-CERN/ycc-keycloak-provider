@@ -5,16 +5,14 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /** Represents a licence belonging to a member. Only the used fields are listed. */
 @Entity
 @Table(name = "INFOLICENCES")
-@Getter
-@Setter
-@ToString
+@Data
+@NoArgsConstructor
 // Serializable: referred by LicenceEntity, which is Serializable
 public class LicenceInfoEntity implements Serializable {
   /** Licence info ID. */

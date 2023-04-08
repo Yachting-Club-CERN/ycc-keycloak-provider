@@ -9,19 +9,17 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /** Represents a licence belonging to a member. Only the used fields are listed. */
 @Entity
 @Table(name = "LICENCES")
-@Getter
-@Setter
-@ToString
 @NamedQuery(
     name = "LicenceEntity.findAllActiveByMemberId",
     query = "SELECT l from LicenceEntity l WHERE l.memberId = :memberId AND STATUS > 0")
+@Data
+@NoArgsConstructor
 public class LicenceEntity implements Serializable {
   /** Member ID. */
   @Id

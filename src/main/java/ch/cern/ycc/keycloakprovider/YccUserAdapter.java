@@ -149,29 +149,29 @@ public class YccUserAdapter extends AbstractUserAdapter {
   }
 
   /**
-   * Gets a group with the specified id. Creates it dynamically if it does not exist.
+   * Gets the group with the specified name. Creates it dynamically if it does not exist.
    *
-   * @param idAndName id = name, for simplicity
+   * @param name name
    * @return the group
    */
-  private GroupModel createOrGetGroup(String idAndName) {
-    GroupModel group = realm.getGroupById(idAndName);
-    if (group == null) {
-      group = realm.createGroup(idAndName, idAndName);
-    }
-    return group;
+  private GroupModel createOrGetGroup(@NonNull String name) {
+    return realm
+        .getGroupsStream()
+        .filter(group -> group.getName().equals(name))
+        .findFirst()
+        .orElseGet(() -> realm.createGroup(name));
   }
 
   /**
-   * Gets a role with the specified id. Creates it dynamically if it does not exist.
+   * Gets the role with the specified name. Creates it dynamically if it does not exist.
    *
-   * @param idAndName id = name, for simplicity
+   * @param name name
    * @return the role
    */
-  private RoleModel createOrGetRole(String idAndName) {
-    RoleModel role = realm.getRoleById(idAndName);
+  private RoleModel createOrGetRole(@NonNull String name) {
+    RoleModel role = realm.getRole(name);
     if (role == null) {
-      role = realm.addRole(idAndName, idAndName);
+      role = realm.addRole(name);
     }
     return role;
   }

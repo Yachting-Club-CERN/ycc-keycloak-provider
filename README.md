@@ -29,9 +29,8 @@ Recommendation:
 - Use *roles* for giving permissions to users, e.g., active, committee, boat licence. Prefix roles
   with `ycc-`, e.g., `ycc-member-active`
 
-For groups and roles use the `id = name` convention for simplicity (FYI the `name` is exposed to the
-clients). Attributes, groups and roles are available in the as user info on the client side if the
-client is authorised to access this information.
+Attributes, groups and roles are available in the as user info on the client side if the client is
+authorised to access this information.
 
 ## Configuration
 
@@ -51,6 +50,8 @@ This gives that `ycc-keycloak-provider` comes with several JARs:
   persistence unit: `ycc-db-prod`
 - `ycc-keycloak-provider-VERSION-ycc-db-test.jar`: `persistence.xml` for test database, persistence
   unit: `ycc-db-test`
+- `ycc-keycloak-provider-VERSION-ycc-db-dev.jar`: `persistence.xml` for dev database, persistence
+  unit: `ycc-db-dev`
 - `ycc-keycloak-provider-VERSION-ycc-db-local.jar`: `persistence.xml` for local database,
   persistence unit: `ycc-db-local`
 

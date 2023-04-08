@@ -8,9 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Represents a YCC fee record (membership fee, course fee etc. paid by a user).
@@ -20,14 +19,13 @@ import lombok.ToString;
  */
 @Entity
 @Table(name = "FEESRECORDS")
-@Getter
-@Setter
-@ToString
 @NamedQuery(
     name = "FeeRecordEntity.findAllByMemberIdAndFinancialYear",
     query =
         "SELECT fr from FeeRecordEntity fr "
             + "WHERE fr.memberId = :memberId AND financialYear = :financialYear")
+@Data
+@NoArgsConstructor
 public class FeeRecordEntity implements Serializable {
   /** Member ID. */
   @Id
