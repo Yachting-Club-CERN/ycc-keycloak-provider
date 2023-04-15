@@ -159,7 +159,7 @@ public class UserRepository {
    * @return <code>true</code> if the user is an active member, otherwise <code>false</code>
    */
   public boolean isActiveMember(@NonNull UserEntity user) {
-    if (Constants.HONORARY_MEMBERSHIP_TYPE.equals(user.getMembershipType())) {
+    if (Constants.YCC_HONORARY_MEMBERSHIP_TYPE.equals(user.getMembershipType())) {
       return true;
     }
 
