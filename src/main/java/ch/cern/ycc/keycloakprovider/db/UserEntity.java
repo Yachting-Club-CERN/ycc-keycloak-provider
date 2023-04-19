@@ -19,6 +19,9 @@ import lombok.NoArgsConstructor;
 @Entity
 @Table(name = "WEB_LOGON")
 @SecondaryTable(name = "MEMBERS", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ID"))
+@SecondaryTable(
+    name = "HELPERS_APP_PERMISSIONS",
+    pkJoinColumns = @PrimaryKeyJoinColumn(name = "MEMBER_ID"))
 @NamedQuery(name = "UserEntity.getCount", query = "SELECT COUNT(u) FROM UserEntity u")
 @NamedQuery(name = "UserEntity.findAll", query = "SELECT u FROM UserEntity u ORDER BY u.username")
 @NamedQuery(
@@ -76,4 +79,7 @@ public class UserEntity {
 
   @Column(table = "MEMBERS", name = "MEMBERSHIP")
   private String membershipType;
+
+  @Column(table = "HELPERS_APP_PERMISSIONS", name = "PERMISSION")
+  private String helpersAppPermission;
 }

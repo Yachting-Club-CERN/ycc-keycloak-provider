@@ -138,6 +138,13 @@ public class YccUserAdapter extends AbstractUserAdapter {
                       createOrGetRole(Constants.YCC_LICENCE_ROLE_PREFIX + licence.toLowerCase())));
     }
 
+    String helpersAppPermission = user.getHelpersAppPermission();
+    if (helpersAppPermission != null) {
+      roles.add(
+          createOrGetRole(
+              Constants.YCC_HELPERS_APP_ROLE_PREFIX + helpersAppPermission.toLowerCase()));
+    }
+
     // This is a good location to add extra roles
 
     return Set.copyOf(roles);
