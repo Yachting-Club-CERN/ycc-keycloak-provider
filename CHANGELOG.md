@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade to Keycloak 23.0
+- Upgrade to Ruthless 0.8.0 & Gradle 8.4
+
 ## [0.4.0] - 2023-04-20
 
 ### Added

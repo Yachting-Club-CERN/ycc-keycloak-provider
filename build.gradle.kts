@@ -2,7 +2,7 @@ import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
     id("dev.lajoscseppento.ruthless.java-library")
-    id("org.sonarqube") version "4.0.0.2929"
+    id("org.sonarqube") version "4.4.1.3373"
     `maven-publish`
 }
 
