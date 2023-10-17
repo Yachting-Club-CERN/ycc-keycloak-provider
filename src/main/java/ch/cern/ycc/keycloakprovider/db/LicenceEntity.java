@@ -37,7 +37,7 @@ public class LicenceEntity implements Serializable {
   private LicenceInfoEntity licenceInfo;
 
   /**
-   * Key status, active=1, inactive=0. Other values/null is not present in the database as of 2023.
+   * Key status, active=1, inactive=0. Other values/null are not present in the database as of 2023.
    */
   @Column(name = "STATUS")
   private Integer status;
