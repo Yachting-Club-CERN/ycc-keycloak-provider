@@ -6,15 +6,15 @@ plugins {
     `maven-publish`
 }
 
-val keycloakVersion = "21.0.1"
+val keycloakVersion = "22.0.4"
 
 dependencies {
     compileOnly("org.keycloak:keycloak-core:$keycloakVersion")
     compileOnly("org.keycloak:keycloak-server-spi:$keycloakVersion")
     compileOnly("org.keycloak:keycloak-model-jpa:$keycloakVersion")
-    compileOnly("commons-codec:commons-codec:[1.15,2)") // Comes with Keycloak 21.0.1
-    compileOnly("jakarta.persistence:jakarta.persistence-api:[2.2.3,3)")// Comes with Keycloak 21.0.1
-    compileOnly("com.oracle.database.jdbc:ojdbc11:[21.5.0.0,22)") // Comes with Keycloak 21.0.1
+    compileOnly("commons-codec:commons-codec:[1.16,2)") // Comes with Keycloak 22.0.4
+    compileOnly("jakarta.persistence:jakarta.persistence-api:[3.1.0,4)")// Comes with Keycloak 22.0.4
+    compileOnly("com.oracle.database.jdbc:ojdbc11:[23.2.0.0,24)") // Comes with Keycloak 22.0.4
 }
 
 configurations {
@@ -28,7 +28,7 @@ val configurationJarTasks = mutableListOf<TaskProvider<Jar>>()
 listOf("ycc-db-local", "ycc-db-dev", "ycc-db-test", "ycc-db-prod").forEach { env ->
     val generate = tasks.register<Sync>("generate-$env") {
         from(configuration.get().allSource)
-        into(project.buildDir.toPath().resolve("tmp/generated-$env"))
+        into(layout.buildDirectory.file("tmp/generated-$env"))
         filter(ReplaceTokens::class, "tokens" to mapOf("name" to env))
     }
 
@@ -51,7 +51,7 @@ publishing {
         }
     }
 
-    if (version != null && !(version as String).contains("-SNAPSHOT")) {
+    if (!(version as String).contains("-SNAPSHOT")) {
         logger.quiet("Enabling publication for version {}", version)
 
         repositories {

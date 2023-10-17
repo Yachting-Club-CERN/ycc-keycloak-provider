@@ -1,9 +1,9 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  * User entity demo. Start the local DB before running this program.
@@ -14,15 +14,9 @@ public class UserEntityDemo {
   public static void main(String[] args) {
     EntityManagerFactory entityManagerFactory =
         Persistence.createEntityManagerFactory("ycc-db-local");
-    EntityManager entityManager = null;
 
-    try {
-      entityManager = entityManagerFactory.createEntityManager();
+    try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
       demo(entityManager);
-    } finally {
-      if (entityManager != null) {
-        entityManager.close();
-      }
     }
   }
 
