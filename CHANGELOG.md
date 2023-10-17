@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Upgrade to Keycloak 22.0.4
+- Upgrade to Keycloak 22.0.4 (also brings in Hibernate 6.2)
 - Upgrade to Ruthless 0.8.0 & Gradle 8.4
 
 ## [0.4.0] - 2023-04-20

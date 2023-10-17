@@ -12,10 +12,9 @@ import java.util.List;
  */
 public class UserEntityDemo {
   public static void main(String[] args) {
-    EntityManagerFactory entityManagerFactory =
-        Persistence.createEntityManagerFactory("ycc-db-local");
-
-    try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+    try (EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("ycc-db-local");
+        EntityManager entityManager = entityManagerFactory.createEntityManager()) {
       demo(entityManager);
     }
   }
@@ -46,7 +45,9 @@ public class UserEntityDemo {
                 "SELECT u FROM UserEntity u WHERE lower(u.username)=lower(:usernameOrEmail) OR lower(u.email)=lower(:usernameOrEmail)",
                 UserEntity.class)
             .setParameter("usernameOrEmail", "DHOGaN")
-            .getResultStream()
+            // Close the cursor before returning
+            .getResultList()
+            .stream()
             .findAny()
             .orElse(null);
 
@@ -58,8 +59,7 @@ public class UserEntityDemo {
         entityManager
             .createNamedQuery("UserEntity.search", UserEntity.class)
             .setParameter("search", null)
-            .getResultStream()
-            .toList();
+            .getResultList();
     for (UserEntity user : nullSearchResult) {
       System.out.println(user);
     }

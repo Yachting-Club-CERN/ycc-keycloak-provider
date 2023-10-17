@@ -15,10 +15,9 @@ import java.util.stream.Collectors;
  */
 public class UserRepositoryDemo {
   public static void main(String[] args) {
-    EntityManagerFactory entityManagerFactory =
-        Persistence.createEntityManagerFactory("ycc-db-local");
-
-    try (EntityManager entityManager = entityManagerFactory.createEntityManager()) {
+    try (EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("ycc-db-local");
+        EntityManager entityManager = entityManagerFactory.createEntityManager()) {
       demo(entityManager);
     }
   }
@@ -31,8 +30,7 @@ public class UserRepositoryDemo {
     System.out.println();
 
     Map<Boolean, List<MemberInfo>> memberInfosByActivity =
-        repository
-            .findAll()
+        repository.findAll().stream()
             .map(
                 user ->
                     new MemberInfo(

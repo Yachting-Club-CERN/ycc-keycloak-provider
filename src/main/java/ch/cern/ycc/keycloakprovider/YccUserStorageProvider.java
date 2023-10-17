@@ -139,7 +139,7 @@ public class YccUserStorageProvider
       @NonNull Map<String, String> params,
       Integer firstResult,
       Integer maxResults) {
-    var search =
+    var results =
         params.containsKey(UserModel.SEARCH)
             ? repository.search(params.get(UserModel.SEARCH))
             : repository.search(
@@ -148,7 +148,7 @@ public class YccUserStorageProvider
                 params.get(UserModel.FIRST_NAME),
                 params.get(UserModel.LAST_NAME));
 
-    return search.map(user -> adapt(realm, user));
+    return results.stream().map(user -> adapt(realm, user));
   }
 
   @Override

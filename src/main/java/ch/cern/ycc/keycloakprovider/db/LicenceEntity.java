@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "LICENCES")
 @NamedQuery(
     name = "LicenceEntity.findAllActiveByMemberId",
-    query = "SELECT l from LicenceEntity l WHERE l.memberId = :memberId AND STATUS > 0")
+    query = "SELECT l FROM LicenceEntity l WHERE l.memberId = :memberId AND l.status > 0")
 @Data
 @NoArgsConstructor
 public class LicenceEntity implements Serializable {
@@ -36,7 +36,9 @@ public class LicenceEntity implements Serializable {
   @JoinColumn(name = "LICENCE_ID")
   private LicenceInfoEntity licenceInfo;
 
-  /** Key status, active/inactive, nullable. */
+  /**
+   * Key status, active=1, inactive=0. Other values/null is not present in the database as of 2023.
+   */
   @Column(name = "STATUS")
-  private Boolean status;
+  private Integer status;
 }

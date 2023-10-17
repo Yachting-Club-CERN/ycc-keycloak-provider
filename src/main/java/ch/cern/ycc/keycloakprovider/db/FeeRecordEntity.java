@@ -22,8 +22,8 @@ import lombok.NoArgsConstructor;
 @NamedQuery(
     name = "FeeRecordEntity.findAllByMemberIdAndFinancialYear",
     query =
-        "SELECT fr from FeeRecordEntity fr "
-            + "WHERE fr.memberId = :memberId AND financialYear = :financialYear")
+        "SELECT fr FROM FeeRecordEntity fr "
+            + "WHERE fr.memberId = :memberId AND fr.financialYear = :financialYear")
 @Data
 @NoArgsConstructor
 public class FeeRecordEntity implements Serializable {

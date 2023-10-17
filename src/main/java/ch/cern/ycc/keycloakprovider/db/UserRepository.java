@@ -5,7 +5,6 @@ import ch.cern.ycc.keycloakprovider.utils.PasswordHasher;
 import jakarta.persistence.EntityManager;
 import java.time.Year;
 import java.util.Collection;
-import java.util.stream.Stream;
 import javax.annotation.Nullable;
 import lombok.NonNull;
 
@@ -41,10 +40,13 @@ public class UserRepository {
   /**
    * Queries all users.
    *
-   * @return stream of all users
+   * @return all users
    */
-  public Stream<UserEntity> findAll() {
-    return entityManager.createNamedQuery("UserEntity.findAll", UserEntity.class).getResultStream();
+  public Collection<UserEntity> findAll() {
+    return entityManager
+        .createNamedQuery("UserEntity.findAll", UserEntity.class)
+        // Close the cursor before returning
+        .getResultList();
   }
 
   /**
@@ -69,7 +71,10 @@ public class UserRepository {
     return entityManager
         .createNamedQuery("UserEntity.findByUsername", UserEntity.class)
         .setParameter("username", username)
-        .getResultStream()
+        .setMaxResults(1)
+        // Close the cursor before returning
+        .getResultList()
+        .stream()
         .findAny()
         .orElse(null);
   }
@@ -85,7 +90,10 @@ public class UserRepository {
     return entityManager
         .createNamedQuery("UserEntity.findByEmail", UserEntity.class)
         .setParameter("email", email)
-        .getResultStream()
+        .setMaxResults(1)
+        // Close the cursor before returning
+        .getResultList()
+        .stream()
         .findAny()
         .orElse(null);
   }
@@ -101,8 +109,11 @@ public class UserRepository {
     return entityManager
         .createNamedQuery("UserEntity.findByUsernameOrEmail", UserEntity.class)
         .setParameter("usernameOrEmail", usernameOrEmail)
-        .getResultStream()
-        .findAny()
+        .setMaxResults(1)
+        // Close the cursor before returning
+        .getResultList()
+        .stream()
+        .findFirst()
         .orElse(null);
   }
 
@@ -110,13 +121,13 @@ public class UserRepository {
    * Searches users.
    *
    * @param search search term
-   * @return result stream
+   * @return results
    */
-  public Stream<UserEntity> search(String search) {
+  public Collection<UserEntity> search(String search) {
     return entityManager
         .createNamedQuery("UserEntity.search", UserEntity.class)
         .setParameter("search", search)
-        .getResultStream();
+        .getResultList();
   }
 
   /**
@@ -126,9 +137,9 @@ public class UserRepository {
    * @param email e-mail address
    * @param firstName first name
    * @param lastName last name
-   * @return result stream
+   * @return results
    */
-  public Stream<UserEntity> search(
+  public Collection<UserEntity> search(
       String username, String email, String firstName, String lastName) {
     return entityManager
         .createNamedQuery("UserEntity.searchByParameters", UserEntity.class)
@@ -136,7 +147,7 @@ public class UserRepository {
         .setParameter("email", email)
         .setParameter("firstName", firstName)
         .setParameter("lastName", lastName)
-        .getResultStream();
+        .getResultList();
   }
 
   /**
@@ -163,14 +174,14 @@ public class UserRepository {
       return true;
     }
 
-    return entityManager
+    return !entityManager
         .createNamedQuery("FeeRecordEntity.findAllByMemberIdAndFinancialYear")
         .setParameter("memberId", user.getId())
         .setParameter("financialYear", Year.now().getValue())
         .setMaxResults(1)
-        .getResultStream()
-        .findAny()
-        .isPresent();
+        // Close the cursor before returning
+        .getResultList()
+        .isEmpty();
   }
 
   /**
@@ -183,7 +194,9 @@ public class UserRepository {
     return entityManager
         .createNamedQuery("LicenceEntity.findAllActiveByMemberId", LicenceEntity.class)
         .setParameter("memberId", user.getId())
-        .getResultStream()
+        // Close the cursor before returning
+        .getResultList()
+        .stream()
         .map(licence -> licence.getLicenceInfo().getLicence())
         .sorted()
         .toList();

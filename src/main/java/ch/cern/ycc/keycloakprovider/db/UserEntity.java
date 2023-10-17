@@ -39,7 +39,7 @@ import lombok.NoArgsConstructor;
 @NamedQuery(
     name = "UserEntity.search",
     query =
-        "SELECT u from UserEntity u "
+        "SELECT u FROM UserEntity u "
             + "WHERE lower(u.username) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.email) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.firstName) LIKE '%' || lower(:search) || '%' "
@@ -48,7 +48,7 @@ import lombok.NoArgsConstructor;
 @NamedQuery(
     name = "UserEntity.searchByParameters",
     query =
-        "SELECT u from UserEntity u "
+        "SELECT u FROM UserEntity u "
             + "WHERE lower(u.username) LIKE '%' || :username || '%' "
             + "AND lower(u.email) LIKE '%' || :email || '%' "
             + "AND lower(u.firstName) LIKE '%' || :firstName || '%' "
