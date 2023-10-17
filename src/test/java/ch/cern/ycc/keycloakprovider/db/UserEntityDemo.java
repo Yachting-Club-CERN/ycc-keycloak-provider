@@ -1,9 +1,9 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 import java.util.List;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 /**
  * User entity demo. Start the local DB before running this program.
@@ -12,17 +12,10 @@ import javax.persistence.Persistence;
  */
 public class UserEntityDemo {
   public static void main(String[] args) {
-    EntityManagerFactory entityManagerFactory =
-        Persistence.createEntityManagerFactory("ycc-db-local");
-    EntityManager entityManager = null;
-
-    try {
-      entityManager = entityManagerFactory.createEntityManager();
+    try (EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("ycc-db-local");
+        EntityManager entityManager = entityManagerFactory.createEntityManager()) {
       demo(entityManager);
-    } finally {
-      if (entityManager != null) {
-        entityManager.close();
-      }
     }
   }
 
@@ -52,7 +45,9 @@ public class UserEntityDemo {
                 "SELECT u FROM UserEntity u WHERE lower(u.username)=lower(:usernameOrEmail) OR lower(u.email)=lower(:usernameOrEmail)",
                 UserEntity.class)
             .setParameter("usernameOrEmail", "DHOGaN")
-            .getResultStream()
+            // Close the cursor before returning
+            .getResultList()
+            .stream()
             .findAny()
             .orElse(null);
 
@@ -64,8 +59,7 @@ public class UserEntityDemo {
         entityManager
             .createNamedQuery("UserEntity.search", UserEntity.class)
             .setParameter("search", null)
-            .getResultStream()
-            .toList();
+            .getResultList();
     for (UserEntity user : nullSearchResult) {
       System.out.println(user);
     }

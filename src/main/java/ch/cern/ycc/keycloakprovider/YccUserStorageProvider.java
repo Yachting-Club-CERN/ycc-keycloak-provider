@@ -135,23 +135,20 @@ public class YccUserStorageProvider
 
   @Override
   public Stream<UserModel> searchForUserStream(
-      @NonNull RealmModel realm, @NonNull String search, Integer firstResult, Integer maxResults) {
-    return repository.search(search).map(user -> adapt(realm, user));
-  }
-
-  @Override
-  public Stream<UserModel> searchForUserStream(
       @NonNull RealmModel realm,
       @NonNull Map<String, String> params,
       Integer firstResult,
       Integer maxResults) {
-    return repository
-        .search(
-            params.get(UserModel.USERNAME),
-            params.get(UserModel.EMAIL),
-            params.get(UserModel.FIRST_NAME),
-            params.get(UserModel.LAST_NAME))
-        .map(user -> adapt(realm, user));
+    var results =
+        params.containsKey(UserModel.SEARCH)
+            ? repository.search(params.get(UserModel.SEARCH))
+            : repository.search(
+                params.get(UserModel.USERNAME),
+                params.get(UserModel.EMAIL),
+                params.get(UserModel.FIRST_NAME),
+                params.get(UserModel.LAST_NAME));
+
+    return results.stream().map(user -> adapt(realm, user));
   }
 
   @Override

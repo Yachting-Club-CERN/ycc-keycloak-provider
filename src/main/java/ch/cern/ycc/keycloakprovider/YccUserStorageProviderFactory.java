@@ -1,8 +1,8 @@
 package ch.cern.ycc.keycloakprovider;
 
 import ch.cern.ycc.keycloakprovider.db.UserRepository;
+import jakarta.persistence.EntityManager;
 import java.util.List;
-import javax.persistence.EntityManager;
 import lombok.NonNull;
 import lombok.extern.slf4j.Slf4j;
 import org.keycloak.component.ComponentModel;
@@ -48,9 +48,7 @@ public class YccUserStorageProviderFactory
   public void validateConfiguration(
       KeycloakSession session, RealmModel realm, ComponentModel config)
       throws ComponentValidationException {
-    EntityManager em = null;
-    try {
-      em = createEntityManager(session, config);
+    try (EntityManager em = createEntityManager(session, config)) {
       var repository = new UserRepository(em);
       int userCount = repository.getCount();
       log.info("Connected to the database and found {} users", userCount);
@@ -58,10 +56,6 @@ public class YccUserStorageProviderFactory
       String msg = "Failed to validate the database configuration: " + ex.getMessage();
       log.warn(msg, ex);
       throw new ComponentValidationException(msg, ex);
-    } finally {
-      if (em != null) {
-        em.close();
-      }
     }
   }
 

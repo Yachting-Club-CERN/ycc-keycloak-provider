@@ -1,29 +1,29 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
  * Represents a YCC fee record (membership fee, course fee etc. paid by a user).
  *
- * <p>Note: this class has an inline {@link javax.persistence.IdClass} to create a code-only primary
- * key over all fields. Thus, this class was also made {@link Serializable}.
+ * <p>Note: this class has an inline {@link jakarta.persistence.IdClass} to create a code-only
+ * primary key over all fields. Thus, this class was also made {@link Serializable}.
  */
 @Entity
 @Table(name = "FEESRECORDS")
 @NamedQuery(
     name = "FeeRecordEntity.findAllByMemberIdAndFinancialYear",
     query =
-        "SELECT fr from FeeRecordEntity fr "
-            + "WHERE fr.memberId = :memberId AND financialYear = :financialYear")
+        "SELECT fr FROM FeeRecordEntity fr "
+            + "WHERE fr.memberId = :memberId AND fr.financialYear = :financialYear")
 @Data
 @NoArgsConstructor
 public class FeeRecordEntity implements Serializable {

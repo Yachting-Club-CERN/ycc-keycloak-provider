@@ -1,13 +1,13 @@
 package ch.cern.ycc.keycloakprovider.db;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
-import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.SecondaryTable;
-import javax.persistence.Table;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.SecondaryTable;
+import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -39,7 +39,7 @@ import lombok.NoArgsConstructor;
 @NamedQuery(
     name = "UserEntity.search",
     query =
-        "SELECT u from UserEntity u "
+        "SELECT u FROM UserEntity u "
             + "WHERE lower(u.username) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.email) LIKE '%' || lower(:search) || '%' "
             + "OR lower(u.firstName) LIKE '%' || lower(:search) || '%' "
@@ -48,7 +48,7 @@ import lombok.NoArgsConstructor;
 @NamedQuery(
     name = "UserEntity.searchByParameters",
     query =
-        "SELECT u from UserEntity u "
+        "SELECT u FROM UserEntity u "
             + "WHERE lower(u.username) LIKE '%' || :username || '%' "
             + "AND lower(u.email) LIKE '%' || :email || '%' "
             + "AND lower(u.firstName) LIKE '%' || :firstName || '%' "

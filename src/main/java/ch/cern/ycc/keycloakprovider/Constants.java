@@ -8,6 +8,7 @@ package ch.cern.ycc.keycloakprovider;
 public final class Constants {
   /** Provider ID. If changed you need to reconfigure all realms. */
   public static final String ID = "YCC Oracle Users";
+
   /** Provider help text. */
   public static final String HELP_TEXT =
       "This provider is able to federate users from the YCC Oracle Database";

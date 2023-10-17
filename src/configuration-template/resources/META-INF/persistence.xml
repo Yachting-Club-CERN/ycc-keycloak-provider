@@ -10,10 +10,10 @@
     <class>ch.cern.ycc.keycloakprovider.db.LicenceInfoEntity</class>
     <class>ch.cern.ycc.keycloakprovider.db.UserEntity</class>
     <properties>
-      <property name="javax.persistence.transactionType" value="JTA"/>
+      <property name="jakarta.persistence.transactionType" value="JTA"/>
 
       <property name="hibernate.connection.datasource" value="@name@"/>
-      <property name="hibernate.dialect" value="org.hibernate.dialect.Oracle12cDialect"/>
+      <property name="hibernate.dialect" value="org.hibernate.dialect.OracleDialect"/>
       <property name="hibernate.show_sql" value="false"/>
       <property name="hibernate.format_sql" value="true"/>
     </properties>
