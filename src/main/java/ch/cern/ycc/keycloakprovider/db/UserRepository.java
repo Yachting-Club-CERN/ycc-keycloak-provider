@@ -5,14 +5,17 @@ import ch.cern.ycc.keycloakprovider.utils.PasswordHasher;
 import jakarta.persistence.EntityManager;
 import java.time.Year;
 import java.util.Collection;
+import java.util.Objects;
 import javax.annotation.Nullable;
 import lombok.NonNull;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Keycloak repository for YCC users.
  *
  * @author Lajos Cseppento
  */
+@Slf4j
 public class UserRepository {
   private final EntityManager entityManager;
 
@@ -197,7 +200,17 @@ public class UserRepository {
         // Close the cursor before returning
         .getResultList()
         .stream()
-        .map(licence -> licence.getLicenceInfo().getLicence())
+        .map(
+            licence -> {
+              var licenceInfo = licence.getLicenceInfo();
+              if (licenceInfo == null) {
+                log.warn("User {} has a licence registered, but licence info does not exist: {}", user, licence);
+                return null;
+              } else {
+                return licenceInfo.getLicence();
+              }
+            })
+        .filter(Objects::nonNull)
         .sorted()
         .toList();
   }

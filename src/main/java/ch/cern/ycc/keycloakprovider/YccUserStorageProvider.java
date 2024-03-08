@@ -67,12 +67,16 @@ public class YccUserStorageProvider
   }
 
   @Override
-  public boolean isConfiguredFor(RealmModel realm, UserModel userModel, String credentialType) {
+  public boolean isConfiguredFor(
+      @NonNull RealmModel realm, @NonNull UserModel userModel, String credentialType) {
     return supportsCredentialType(credentialType) && getPassword(userModel) != null;
   }
 
   @Override
-  public boolean isValid(RealmModel realm, UserModel user, CredentialInput credentialInput) {
+  public boolean isValid(
+      @NonNull RealmModel realm,
+      @NonNull UserModel user,
+      @NonNull CredentialInput credentialInput) {
     if (supportsCredentialType(credentialInput.getType())) {
       return repository.verifyPassword(user.getUsername(), credentialInput.getChallengeResponse());
     } else {
@@ -85,7 +89,10 @@ public class YccUserStorageProvider
   ////////////////////////////////////////
   @Override
   @SuppressWarnings("unchecked")
-  public void onCache(RealmModel realm, CachedUserModel cachedUserModel, UserModel userModel) {
+  public void onCache(
+      @NonNull RealmModel realm,
+      @NonNull CachedUserModel cachedUserModel,
+      @NonNull UserModel userModel) {
     if (userModel instanceof YccUserAdapter user) {
       String password = user.getPassword();
       if (password != null) {
@@ -94,7 +101,7 @@ public class YccUserStorageProvider
     }
   }
 
-  private String getPassword(UserModel userModel) {
+  private String getPassword(@NonNull UserModel userModel) {
     if (userModel instanceof CachedUserModel cachedUser) {
       return (String) cachedUser.getCachedWith().get(PASSWORD_CACHE_KEY);
     } else if (userModel instanceof YccUserAdapter user) {
@@ -109,7 +116,7 @@ public class YccUserStorageProvider
   ////////////////////////////////////////
 
   @Override
-  public UserModel getUserById(RealmModel realm, String id) {
+  public UserModel getUserById(@NonNull RealmModel realm, @NonNull String id) {
     long externalId = Long.parseLong(StorageId.externalId(id));
     return adapt(realm, repository.findById(externalId));
   }
@@ -153,13 +160,16 @@ public class YccUserStorageProvider
 
   @Override
   public Stream<UserModel> getGroupMembersStream(
-      RealmModel realm, GroupModel group, Integer firstResult, Integer maxResults) {
+      @NonNull RealmModel realm,
+      @NonNull GroupModel group,
+      Integer firstResult,
+      Integer maxResults) {
     return Stream.empty();
   }
 
   @Override
   public Stream<UserModel> searchForUserByUserAttributeStream(
-      RealmModel realm, String attrName, String attrValue) {
+      @NonNull RealmModel realm, String attrName, String attrValue) {
     return Stream.empty();
   }
 

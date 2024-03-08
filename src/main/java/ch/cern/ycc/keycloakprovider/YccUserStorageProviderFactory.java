@@ -46,7 +46,7 @@ public class YccUserStorageProviderFactory
 
   @Override
   public void validateConfiguration(
-      KeycloakSession session, RealmModel realm, ComponentModel config)
+      @NonNull KeycloakSession session, @NonNull RealmModel realm, @NonNull ComponentModel config)
       throws ComponentValidationException {
     try (EntityManager em = createEntityManager(session, config)) {
       var repository = new UserRepository(em);

@@ -91,6 +91,11 @@ following:
 
 ## Notes
 
+### Inconsistent data resilience
+
+This component should be resilient to inconsistent data in the DB (e.g., missing foreign keys),
+because it can block log in for users.
+
 ### JPA Configuration Dead Ends (Lajos)
 
 I have tried _many-many_ ways of facilitating the configuration. From the code point of view
