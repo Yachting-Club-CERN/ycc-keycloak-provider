@@ -204,7 +204,10 @@ public class UserRepository {
             licence -> {
               var licenceInfo = licence.getLicenceInfo();
               if (licenceInfo == null) {
-                log.warn("User {} has a licence registered, but licence info does not exist: {}", user, licence);
+                log.warn(
+                    "User {} has a licence registered, but licence info does not exist: {}",
+                    user,
+                    licence);
                 return null;
               } else {
                 return licenceInfo.getLicence();

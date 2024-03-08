@@ -38,10 +38,12 @@ public class LicenceEntity implements Serializable {
   @Nullable // If the DB is inconsistent, this can be null
   private LicenceInfoEntity licenceInfo;
 
+  /** Year when the licence was issued. */
   @Column(name = "LYEAR")
   private Integer year;
 
-  @Column(name="LCOMMENTS")
+  /** Comment. */
+  @Column(name = "LCOMMENTS")
   private String comment;
 
   /**
