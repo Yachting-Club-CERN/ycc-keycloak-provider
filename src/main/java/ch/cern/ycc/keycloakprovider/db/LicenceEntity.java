@@ -1,5 +1,6 @@
 package ch.cern.ycc.keycloakprovider.db;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -34,7 +35,16 @@ public class LicenceEntity implements Serializable {
   /** Licence info. */
   @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "LICENCE_ID")
+  @Nullable // If the DB is inconsistent, this can be null
   private LicenceInfoEntity licenceInfo;
+
+  /** Year when the licence was issued. */
+  @Column(name = "LYEAR")
+  private Integer year;
+
+  /** Comment. */
+  @Column(name = "LCOMMENTS")
+  private String comment;
 
   /**
    * Key status, active=1, inactive=0. Other values/null are not present in the database as of 2023.
