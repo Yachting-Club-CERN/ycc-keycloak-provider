@@ -13,8 +13,9 @@ import lombok.NonNull;
  *
  * @author Lajos Cseppento
  */
-public final class PasswordHasher {
-  private static final String HASH_PREFIX = "{X-PBKDF2}HMACSHA1";
+public final class LegacyPasswordHasher {
+  // Exposed for PasswordVerifier
+  static final String HASH_PREFIX = "{X-PBKDF2}HMACSHA1";
   private static final int PBKDF2_ITERATIONS = 20000;
   private static final int SALT_BYTE_SIZE = 16;
   private static final int HASH_BIT_SIZE = 160; // 20 bytes
@@ -29,7 +30,7 @@ public final class PasswordHasher {
     }
   }
 
-  private PasswordHasher() {
+  private LegacyPasswordHasher() {
     throw new UnsupportedOperationException();
   }
 
@@ -84,7 +85,7 @@ public final class PasswordHasher {
     // Definitely one could do it better
     String hash = sanitise(passwordHash);
     String hashNew = sanitise(hash(password, iterations, salt));
-    return hash.equals(hashNew);
+    return PasswordVerifier.constantTimeEquals(hash.getBytes(), hashNew.getBytes());
   }
 
   private static String sanitise(@NonNull String value) {

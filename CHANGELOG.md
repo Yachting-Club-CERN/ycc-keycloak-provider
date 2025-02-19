@@ -7,7 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
- ## [1.0.1] - 2024-03-09
+### Added
+
+- Add support for new password hashing
+
+## [1.0.1] - 2024-03-09
 
 ### Changed
 
@@ -19,7 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Upgrade to Keycloak 22.0.4 (also brings in Hibernate 6.2)
 - Upgrade to Ruthless 0.8.0 & Gradle 8.4
-- Transform JPA queries to never return open result streams to avoid cursor leak. This was triggered by the Hibernate 6.2 upgrade
+  6.2 upgrade
 
 ## [0.4.0] - 2023-04-20
 
@@ -31,7 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
-- Create groups and roles by name only to support multiple YCC realms in the same Keycloak instance (and let Keycloak generate IDs)
+- Create groups and roles by name only to support multiple YCC realms in the same Keycloak instance (and let Keycloak
+  generate IDs)
 
 ## [0.3.1] - 2023-04-08
 

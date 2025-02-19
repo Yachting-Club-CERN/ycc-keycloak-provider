@@ -6,7 +6,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
-class PasswordHasherTest {
+class LegacyPasswordHasherTest {
   @ValueSource(
       strings = {
         "password1",
@@ -17,8 +17,8 @@ class PasswordHasherTest {
     // Given
 
     // When
-    String passwordHash1 = PasswordHasher.hash(password);
-    String passwordHash2 = PasswordHasher.hash(password);
+    String passwordHash1 = LegacyPasswordHasher.hash(password);
+    String passwordHash2 = LegacyPasswordHasher.hash(password);
 
     // Then
     checkVerify(true, password, passwordHash1);
@@ -69,6 +69,6 @@ class PasswordHasherTest {
   }
 
   private static void checkVerify(boolean expected, String password, String passwordHash) {
-    assertThat(PasswordHasher.verify(password, passwordHash)).isEqualTo(expected);
+    assertThat(LegacyPasswordHasher.verify(password, passwordHash)).isEqualTo(expected);
   }
 }

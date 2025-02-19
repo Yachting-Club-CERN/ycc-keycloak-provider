@@ -1,7 +1,7 @@
 package ch.cern.ycc.keycloakprovider.db;
 
 import ch.cern.ycc.keycloakprovider.Constants;
-import ch.cern.ycc.keycloakprovider.utils.PasswordHasher;
+import ch.cern.ycc.keycloakprovider.utils.PasswordVerifier;
 import jakarta.persistence.EntityManager;
 import java.time.Year;
 import java.util.Collection;
@@ -163,7 +163,7 @@ public class UserRepository {
    */
   public boolean verifyPassword(@NonNull String username, @NonNull String password) {
     UserEntity user = findByUsernameOrEmail(username);
-    return user != null && PasswordHasher.verify(password, user.getPassword());
+    return user != null && PasswordVerifier.verify(password, user.getPassword());
   }
 
   /**
