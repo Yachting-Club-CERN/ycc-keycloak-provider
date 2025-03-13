@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-03-13
+
 ### Added
 
 - Add support for new password hashing
@@ -69,6 +71,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial version for federating users from YCC Oracle Database to Keycloak
 
 [Unreleased]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/compare/v1.0.1...HEAD
+[1.1.0]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v1.1.0
 [1.0.1]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v1.0.1
 [1.0.0]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v1.0.0
 [0.4.0]: https://github.com/Yachting-Club-CERN/ycc-keycloak-provider/releases/tag/v0.4.0
