@@ -15,6 +15,8 @@ dependencies {
     compileOnly("commons-codec:commons-codec:[1.16,2)") // Comes with Keycloak 22.0.4
     compileOnly("jakarta.persistence:jakarta.persistence-api:[3.1.0,4)")// Comes with Keycloak 22.0.4
     compileOnly("com.oracle.database.jdbc:ojdbc11:[23.2.0.0,24)") // Comes with Keycloak 22.0.4
+
+    testImplementation("com.fasterxml.jackson.core:jackson-databind")
 }
 
 configurations {
