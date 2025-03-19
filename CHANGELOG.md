@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+
+- Upgrade to Keycloak 26.1.4 (also brings in Hibernate 6.6)
+
 ## [1.1.0] - 2025-03-13
 
 ### Added

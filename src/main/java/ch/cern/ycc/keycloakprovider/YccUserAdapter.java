@@ -10,7 +10,7 @@ import java.util.stream.Stream;
 import lombok.NonNull;
 import org.keycloak.common.util.MultivaluedHashMap;
 import org.keycloak.component.ComponentModel;
-import org.keycloak.credential.LegacyUserCredentialManager;
+import org.keycloak.credential.UserCredentialManager;
 import org.keycloak.models.GroupModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.RealmModel;
@@ -152,7 +152,7 @@ public class YccUserAdapter extends AbstractUserAdapter {
 
   @Override
   public SubjectCredentialManager credentialManager() {
-    return new LegacyUserCredentialManager(session, realm, this);
+    return new UserCredentialManager(session, realm, this);
   }
 
   /**
