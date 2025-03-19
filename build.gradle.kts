@@ -11,7 +11,7 @@ val keycloakVersion = "26.1.4"
 // Provided for Keyclaok
 val oracleDriverVersion = "23.7.0.25.01"
 
-// Exact versions which come with Keycloak 26.1.4
+// Exact versions included with Keycloak 26.1.4
 val commonsCodecVersion = "1.17.1"
 val jacksonVersion = "2.17.2"
 val jakartaPersistenceVersion = "3.1.0"
