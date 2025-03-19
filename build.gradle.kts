@@ -6,21 +6,38 @@ plugins {
     `maven-publish`
 }
 
-val keycloakVersion = "22.0.4"
+val keycloakVersion = "26.1.4"
+
+// Provided for Keyclaok
+val oracleDriverVersion = "23.7.0.25.01"
+
+// Exact versions which come with Keycloak 26.1.4
+val commonsCodecVersion = "1.17.1"
+val jacksonVersion = "2.17.2"
+val jakartaPersistenceVersion = "3.1.0"
+val jandexVersion = "3.2.3"
 
 dependencies {
     compileOnly("org.keycloak:keycloak-core:$keycloakVersion")
     compileOnly("org.keycloak:keycloak-server-spi:$keycloakVersion")
     compileOnly("org.keycloak:keycloak-model-jpa:$keycloakVersion")
-    compileOnly("commons-codec:commons-codec:[1.16,2)") // Comes with Keycloak 22.0.4
-    compileOnly("jakarta.persistence:jakarta.persistence-api:[3.1.0,4)")// Comes with Keycloak 22.0.4
-    compileOnly("com.oracle.database.jdbc:ojdbc11:[23.2.0.0,24)") // Comes with Keycloak 22.0.4
+    compileOnly("commons-codec:commons-codec:$commonsCodecVersion")
+    compileOnly("jakarta.persistence:jakarta.persistence-api:$jakartaPersistenceVersion")
 
-    testImplementation("com.fasterxml.jackson.core:jackson-databind")
+    compileOnly("com.oracle.database.jdbc:ojdbc11:$oracleDriverVersion")
+
+    testImplementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
+    // Needed for running Hibernate demos as of 2025-03 / Keycloak 26.1.4
+    testImplementation("io.smallrye:jandex:$jandexVersion")
 }
 
 configurations {
     testImplementation.get().extendsFrom(compileOnly.get())
+}
+
+// Needed for running Hibernate demos as of 2025-03 / Keycloak 26.1.4
+tasks.withType<JavaExec> {
+    jvmArgs("-Djava.util.logging.manager=org.jboss.logmanager.LogManager")
 }
 
 // Generate tasks for creating configuration JARs
